@@ -1,0 +1,1411 @@
+\documentclass[11pt]{article}
+%\usepackage{amsmath, amsthm, enumerate, graphicx, bm, type1cm, amssymb}
+
+\usepackage{amsmath,amsthm,enumerate,graphicx,bm,type1cm,amssymb,epsfig,lscape,setspace,amssymb,url,color,tabu,xcolor,colortbl,rotating}
+
+
+\bibliographystyle{econometrica}
+
+%\usepackage{amsmath, amsthm, enumerate, graphicx, bm, type1cm, amssymb, natbib, remreset}
+%\usepackage{natbib}
+%\usepackage{setspace}
+\theoremstyle{definition}
+\newtheorem{mc}{MC}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{pr}{Proof}
+
+\newtheorem{assump}{Assumption}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+% \def\stackunder#1#2{\mathrel{\mathop{#2}\limits_{#1}}}
+% \renewcommand{\theequation}{\thesection.\arabic{equation}}
+\newtheorem{corol}{Corollary}[section]
+\newcommand{\argmax}{\mathop{\rm \textit{arg} \ \textit{max}}\limits}
+\newcommand{\argmin}{\mathop{\rm \textit{arg} \ \textit{min}}\limits}
+
+\newcommand{\vecop}{{\rm vec}}
+\newcommand{\E}{{\rm E}}
+\newcommand{\Var}{{\rm Var}}
+\newcommand{\determinant}{{\rm det}}
+\newcommand{\tr}{{\rm tr}}
+
+\setlength{\oddsidemargin}{5mm}
+\setlength{\textwidth}{16cm}
+\setlength{\topmargin}{0pt}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\textheight}{23cm}
+\onehalfspacing
+
+\definecolor{Gray}{gray}{0.85}
+
+\title{How Does Overeducation Vary by Field of Degree, \\ and How Does it Potentially Impact Earnings?}
+\author{Robert Ackerman \\ University of North Carolina \\ Master's Thesis \\ Advisor: Dr. Klara Peter}
+% activate to footnote\thanks{Excuse all mistakes.  First attempt at LaTex. E-mail: \texttt{%
+%rkackerm@live.unc.edu}} }
+\date{April 15, 2014}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper explores the role of labor market mismatch by overeducation, commonly defined as individuals working in occupations that require a level of educational attainment below their own, in explaining the wide variation in mean annual wage income across college majors.  The paper builds on the existing mismatch literature by utilizing simple ordinary least squares, as well as Oaxaca-Blinder decomposition and counterfactual density estimation based on Dinardo, Fortin and Lemeiux (1996) to explore this link in the 2011 American Community Survey data.  The paper finds a significant but relatively small role for mismatch in explaining the variation in annual wage income across college majors.   
+\end{abstract}
+
+\section*{I. Introduction}
+\indent
+\par
+The continued persistence of high unemployment despite growth in job openings, has led some to conclude that skill mismatch is a major force in the persistence of high unemployment\footnote{See Kocherlakota (2012).}.  The ratio of job openings to unemployment rate as represented by the Beveridge Curve (Figure 1) reveals the recent unusual behavior of the labor market in this regard.  Propoenents of this conclusion argue that this shift in the Beveridge Curve reveals an underlying structural shift in the labor market itself.  Furthermore, they argue that it represents a mismatch between the skills demanded by the labor market and the skills of the labor force.
+
+\vspace{2mm}
+One channel for skill acquisition is educational attainment.  It is common knowledge that on average a college degree leads to higher earnings and stronger job security.  According to the Bureau of Labor Statistics (BLS) Current Population Survey (CPS), in 2012 median annual earnings for full-time employees with a bachelor's degree was \$55,432 vs. just \$33,904 for those with a high school diploma. Furthermore, the 2012 unemployment rate for those with at least a bachelor's was 4.5 percent, and 8.3 percent for high school graduates.  However, what is true on average is not true for everyone.  While some have called for broadly increasing access to higher education by lowering costs, others have suggested that increasing overall educational attainment isn't the answer.  There is a growing concern that the U.S. is actually overeducating its workforce, or at least misallocating resources towards degrees that are not in high demand and away from those that are.  Furthermore, there is concern that this overeducation and misallocation is leading to an inefficient allocation of resources at a social welfare level and suboptimal labor market outcomes at the individual level\footnote{See Taborrok, Alex (2011) for a brief introduction.}.  For example, Taborrok (2011) notes "In 2009, for example, we graduated 94,271 students with psychology degrees at a time when there were just 98,330 jobs in clinical, counseling, and school psychology in the entire nation.  The latter figure isn't new jobs--it's total jobs!".  At the same time there has been stagnant enrollments in degrees like Science, Technology, Engineering and Math (STEM), areas that have seen strong job growth and are projected to enjoy strong growth in the future.   It is no secret that earnings vary by not only educational attainment, but also by field of degree for those obtaining a college degree.  While these basic statistics are hardly a smoking gun for overeducation and misallocation, they do present a puzzling figure and begs the question:  Can differences in mismatch explain the variation in earnings across fields of degree?  In an effort to begin to examine the degree to which there is mismatch between the skills in demand, and the educational choices of the labor force, this paper builds on the existing economic literature on overeducation and job mismatch.  
+
+\vspace{2mm}
+The growing concern over the potential structural shift in the labor market has increased attention on the economic literature on overeducation and job mismatch.  Typically job mismatch in this context is referring to individuals who hold a job for which the required educational attainment is below their own.  The previous literature has examined both the broad returns to obtaining a college degree at the macro level, and the incidence of overeducation at a micro level.  Beginning with Richard Freeman's \textit{The Overeducated American} in 1976, many authors have analyzed the changing returns to college education through the ratio of college degree holder income to income of high school graduates.  In 1981 Duncan and Hoffman's "The Incidence and Wage Effects of Overeducation" approached the issue at a micro level\footnote{For a comprehensive review of the overeducation and mismatch economic literature see Leuven and Oosterbeek (2011).}.  Leuven and Oosterbeek (2011) summarize these studies, and find that the studies reported a 30 percent incidence of overeducation on average, ranging from 8-40 percent depending on country and model specifications.  They report a mean of 37 percent amongst studies that focused on the United States in particular.  Clearly, there is some existing evidence for the possibility that the labor force is obtaining more education than is demanded by the market.  To determine the extent to which undergraduate field of degree education might be a link between the incidence of overeducation, and the variation in earnings by undergraduate field of degree it is important to first estimate these things seperately before attempting to link them.  
+
+\vspace{2mm}
+In a recent paper Carnevale, Strohl, and Melton (2011) utilized the Census Bureau's 2009 American Community Survey (ACS) data to analyze how the returns to schooling vary by undergraduate major or field of degree.  2009 was the first year that the ACS began including a question about field of degree.  Taking advantage of this new question, they show that median annual income varies greatly by college major choice, ranging from \$29,00 for Counseling Psychology to \$120,000 for Petroleum Engineering.  While there is no debating this wide range of annual earnings by major choice, the potential explanations for this have received mostly cursory treatment.  Furthermore, there has been little attention focused on linking the overeducation and job mismatch with college major choice\footnote{For one exception, see Ortiz and Kucel (2008) for one study that explores the link using data from Spain and Germany.}.
+
+\vspace{2mm}
+Utilizing the 2011 ACS data, this study extends the existing literature, by focusing on overeducation and mismatch by major choice in the United States, and the potential impact on earnings.  Employing a realized matches method to estimate required education by occupation, I find 28.51 percent of Bachelor's degree holders in the U.S. were overeducated on some level, which is consistent with the estimates of overeducation incidence in the existing literature.  I find that mismatch varies widely by field of degree.  For example the level of mismatch varies from 58.82 percent for the Law and Public Policy major group, to just 17.81 percent for Health.  Having established the existence of this variation in mismatch by degree, the paper next seeks to examine the correlation between mismatch and field of degree, and then finally examine the potential impact on earnings.
+
+Implementing a simple OLS estimation, I show that mismatch is negatively correlated with annual wage income as expected.  However, even when mismatch is accounted for there is still significant variation across major groups, which suggests that there is something beyond the varying shares across majors of individuals occupying jobs with a required educational attainment level below their own, that drives differences in earnings across college majors.   
+
+\vspace{2mm}
+Finally, the paper narrows its focus to STEM and Non-STEM degree groupings.  First the paper employs a simple mean decomposition in the spirit of Oaxaca (1973) and Blinder (1973), to explore the potential impact of the differences in covariates and their coefficients across these two groups.  This analysis confirms that of the simple OLS estimation, in that differences in mismatch plays a statistically significant role in explaining the differences in wages, but it is a relatively small role compared to that of the other covariates.   
+
+Next, the STEM analysis is extended beyond the mean, to exploring the potential impact for the entire densities by employing kernel density estimation, and some basic decomposition methods based on Dindardo, Fortin and Lemieux (1996) DFL.  Again, this analysis confirms that of the previous techniques in that it finds a potentially significant but small role for mismatch in explaining the variation in wages across the two major groups.  
+
+\vspace{2mm}
+The paper is organized as follows.  Section II discusses discusses the method used to measure overeducation and mismatch based on previous methods utilizing realized matches\footnote{See: Verdugo and Verdugo (1989), Kiker et al (1997), and Clark, Joubert, and Maurel (2013)}. Section III discusses the 2011 ACS data, updates the basic findings of Carnevale et al, and provides some basic statistics by the 15 basic major groups outlined in their paper. Section IV presents an empirical model based on the basic mismatch model introduced by Duncan and Hoffman (1981), and estimates the model using OLS and Tobit methods.  Section V presents the Oaxaca-Blinder, kernel density, and DFL techniques and estimates for STEM and Non-STEM degree holders.  Section VI concludes, and discusses directions for future research.
+
+\vspace{2mm}
+
+\section*{ II. Measuring Mismatch}
+
+\normalsize
+\vspace{1.5 mm}
+\indent
+\par
+In order to measure overeducation and job mismatch, I first construct some a measure of "required education" for each occupation.  The previous literature has typically approached this in one of three ways: self-assesment, job analysis, and realized matches The ACS data does not contain any self-assesment questions, and implementing a job analysis method utilizing the Dictionary of Occupational Titles as others have done in the past is not possible given the limited level of detail in the three digit Census occupation codes.  Therefore the method I employ is one of realized matches.  There are drawbacks to this method. Realized matches are not a result of just job requirements, but of the resulting equilibrium outcome reflecting both demand and supply conditions.  Realistically job requirements vary within an occupation, and realized matches does not account for this.  Finally, the method is not accounting for the changing nature of job requirements over time, and for the requirements at the time an individual initially entered the occupation\footnote{See Leuven and Oosterbeek (2011) for a thorough review of the pros and cons of the various methods.}.
+
+\vspace{2mm}
+In particular I designated the required level of education to be the mode level of educational attainment\footnote{As defined in section 2.3.} within each occupation for those in the labor force.  Using the full 3-digit occupation codes requires assigning a mode to an occupation based on a low number of observations in many instances.  To avoid this I collapsed the 3-digit codes into 80 2-digit codes, which greatly reduced this problem albeit at the cost of increasing heterogeneity within an occupation.
+
+\vspace{2mm}
+According to the Bureau of Labor Statistics (BLS)\footnote{Current Population Survey, Household Data Annual Averages 7. Employment status of the civilian non institutional population 25 years and over by educational attainment, sex, race, and Hispanic or Latino ethnicity. retrieved: http://www.bls.gov/cps/cpsaat07.htm\#cps\_eeann\_educ.f.1}, in 2011 workers with less than a high school diploma made up 8.1 percent of the employed workforce (ages 25 and over).  Those with high school degrees, some college, and bachelor's or more made up 27.6 percent, 27.7, and 36.6 percent of the employed workforce respectively (ages 25 and over).  In order to compare across these data sets, for the BLS data, I combined less than high school and high school degree holders.  For the ACS data, I combined the bachelor's degree and more than bachelor's degree categories (see the following section for a description of the ACS data). Table 1 reports these values, the corresponding values estimated from the ACS data, and also the shares of required education as defined above.  The shares I've estimated and constructed are roughly in line with the BLS estimates.
+
+\vspace{2mm}
+\normalsize
+\indent
+Given this measure of required education, I then constructed a measure of overeducation and four types of job mismatch. For bachelor's degree holders I consider both terminal degree holders, and those with advanced degrees.  I consider mismatches for both types.  I consider type one mismatch to be terminal bachelor's degree holders with a job that has a required education of high school degree, type two if the job requires some college.  In addition I define type three as an advanced degree holder in a high school job, and type four as an advanced degree holder in a job requiring only some college.  Estimates of the incidence of mismatch are contained in the following section\footnote{To test the sensitivity of the results to the chosen mismatch specification, an alternative specification employing an IPUMS-USA generated educational score is described and estimated in the Appendix (Tables 14 and 15).  The main conclusions of the paper did not change under this alternative specification.}.   
+
+\section*{III. Data Description}
+\indent
+\par
+
+\indent
+\par
+This study uses the 2011 ACS data obtained from the Integrated Public Use Microdata Series (IPUMS-USA) project administered by the Minnesota Population Center, University of Minnesota\footnote{Steven Ruggles, J. Trent Alexander, Katie Genadek, Ronald Goeken, Matthew B. Schroeder, and Matthew Sobek. Integrated Public Use Microdata Series: Version 5.0 [Machine-readable database]. Minneapolis: University of Minnesota, 2010.}.  The ACS was first implemented by the United States Census Bureau (Census) in 2005 as a replacement for the long form of the decennial census, in an effort to collect and distribute more timely information. It uses monthly surveys to generate annually updated data for the same census tracts and block groups.  The 2011 sample contains 3,112,017 observations.  
+
+\vspace{2mm}
+The ACS data include an annual measure of wage and salary income at the individual level.  One obvious concern is accounting for the selection bias introduced by the nonrandom reporting of wage and salary income.  To check for the potential impact of this selection bias, in Section IV I estimate a Tobit selection model to account for censoring.  The main results of the paper were not impacted by this potential issue, and therefor these estimates are relegated to the Appendix.   
+
+\vspace{2mm}
+The ACS contains a variable measuring educational attainment which indicates attainment by the following degrees: high school, associate's, bachelor's, master's, professional beyond bachelor's, and doctoral.  From this variable, I have collapsed their classifications into four groups: high school degree or less, some college,  bachelor's only and more than bachelor's.  High school degree or less includes individuals with a GED.  Some college includes those who attended college but didn't complete a degree, as well as two year associate's degree holders.  Bachelor's only includes those with a terminal bachelor's degree.  More than bachelor's includes those with a master's, professional, or doctoral degree.   
+
+\vspace{2mm}
+Questions about field of undergraduate degree were included in the survey for the first time in 2009.  Field of degree is reported for 627,141 observations.    The fields are coded according to 173 unique values.  This level of detail makes for unwieldy analysis, and furthermore prevents meaningful analysis for majors with a small number of individuals.  Rather than dropping these observations, I follow the lead of Carnevale, et al. and aggregate the 173 majors into broader 15 major groups.  Carnevale et el used the 2009 data which contained 171 different fields of degree.  The 2011 data contain 173 different fields of degree.  These few minor differences and the details of the aggregation process are discussed in the Appendix.  The 15 major groups are listed in Table 2.
+
+\vspace{2mm}
+Three digit occupation codes according to the contemporary Census classification scheme (431 variables), are reported in the ACS data.  From this variable, I construct a measures of required education and mismatch.  The details of these measure are discussed in the previous section.
+
+\vspace{2mm}
+Finally, The ACS also contains data on some basic demographic characteristics.  In the following section, I describe some of the data by gender and race/ethnicity.  Age, urban/rural status, marital status, and number of children are included in the empirical model described in the following section.
+
+\vspace{2mm}
+Table 3 reports some basic descriptive statistics of the 2011 ACS data by gender and race/ethnicity.  All reported values except number of observations are weighted by ACS Census Individual Weights.  
+
+\vspace{2mm}
+Table 4 breaks out these summary statistics by field of degree. Amongst bachelor's degree holders, the mean age varied from a low of 41.8 for Law \& Public Policy to a high of 53.6 for Education.  Gender breakdown varies substantially.  Engineering has the lowest share of females with 15.3 percent, while Education has the highest with 75.6 percent.  There was also significant variation among major groups in regards to race/ethnicity.  
+
+\vspace{2mm}
+Eventual educational attainment also varies across major groups.  Communications \& Journalism has the highest share of terminal bachelor's degree holders at 79.3 percent, while only 44.4 percent of Biology \& Life Science bachelor's degree holders do not complete some degree beyond a bachelor's.  Amongst all bachelor's degree holders, 36.0 percent obtain some degree beyond undergraduate studies.  Carnevale et, al. restrict their analysis to just terminal bachelor degree holders.  Clearly, this large variation in the eventual educational attainment by major group could play a substantial role in major choice, overeducation, and the impact of mismatch on wages.  I include those with more than a terminal bachelor's in my empirical model in section V, and in the estimation in section VI.  
+
+\vspace{2mm}
+Table 4 also reports mean annual wages for employed, full-year ($>$48 weeks) workers by major field for those with all levels of educational attainment starting with a bachelor's degree.  The major group with the highest mean annual wage income is Engineering at \$93,010, while the Arts is the lowest at \$49,692.  Figure 2 summarizes mean annual wage income by major group for all degree holders.  When only terminal bachelor's degree holders are considered Engineering is again the major group with the highest annual earnings at \$82,944 while Education is the lowest at \$43,632. Figure 3 shows the mean annual wage income by major group for terminal bachelor's degree holders.
+
+\vspace{2mm}
+The is also variation in the labor force participation and unemployment rates across major groups.   Law \& Public Policy degree holders have the largest participation rate at 85.8 percent, while Education had the lowest with 63.1 percent.  On the other hand, Education had the lowest unemployment rate at 2.3 percent, while Communications \& Journalism degree holders had the highest at 5.4 percent.  
+
+\vspace{2mm}
+As previously mentioned, field of degree is reported for 627,141 observations.  Of those, 379,838 reported being employed and working full-year ($>$48 weeks) in the past year.  Of these, 235,232 were terminal bachelor's degree holders while 144,606 held a degree beyond a bachelor's.  Additionally, there are 28,302 amongst the 379,838 that reported a second field of degree that was in a different group than the degree they reported first.  These individuals are assigned their first response \footnote{To check the sensitivity of these results to this decision, Table 13 reports OLS results using the second reported field of degree for those individuals.  These results did not vary significantly from the original specification, and so it is used throughout the remainder of the paper.}.
+
+Given these major groups, and the measures of mismatch from the previous section Table 5 shows the distribution of the types of mismatch by major groups.  Overall, 71.49\% of employed individuals over the age of 25 do not hold jobs that require a lower level of educational attainment than the individual holds.  Amongst those that are mismatched, Types I and II were the most common at 10.56 \% and 12.76 \% respectively.  The Law \& Public Policy\footnote{Under the alternative mismatch specification described in the Appendix, the Law \& Public Policy group faired better, although it remind in the bottom third regardless of specification.  This is largely due to some college being the most common level of education amongst law enforcement occupations.  Under the alternative specification, Agriculture \& Natural Resources was consistently the major group with the highest share of mismatched individuals.  As previously noted, the main results of the paper were not significantly altered by this change in mismatch specification.}  major group had the highest share of mismatched individuals at 58.82\%, while Health had the lowest at just 17.81\%.  Clearly, there is significant variation in the share of mismatch across major groups.  Figure 4 summarizes the total share of mismatch (all types) by major group. 
+
+ 
+\section*{ IV. Empirical Model}
+\normalsize
+\indent
+\par
+The OLS model I estimate is:
+\begin{equation*}
+ln \ \omega_{i}=\beta_{0}+\beta_{1}X_{i}+ \sum_{i=1}^{3} \beta_{i+1}I_{i}^{ed} \sum_{i=1}^{14} \beta_{i+4}I_{i}^{ma} + \sum_{j=1}^{4}\beta_{19+j}I_{j}^{mi}+\epsilon_{i}
+\end{equation*}
+
+
+Where $\epsilon_{i} \ i.i.d \sim N(\mu,\sigma^{2})$, $X_{i}$ is a vector containing exogenous demographic information age, age squared, sex, race, urban, married, and number of kids.  $I_{i}^{ed}$, $I_{i}^{ma}$and $I_{j}^{mi}$ are zero-one indicators for each level of educational attainment, major type and mismatch type.  Log wages are chosen to justify the assumption of normality of the error term, given the common log-normal pattern in the wage income data.  The model is also estimated in levels, and those results are reported in the Appendix.  Educational attainment is normalized by omitting the high school or less level.  Major type is normalized by omitting Arts.  Arts was chosen, because it had the lowest mean annual wage income (\$49,692) amongst the 15 when all levels of educational attainment were included.    Table 6 reports OLS results from estimating this model.
+
+\vspace{2mm}
+\normalsize
+While there is reason to believe these OLS estimates are biased ( eg. the endogeneity of major choice, or the lack of an experience variable), they do provide some encouraging results.  All variables are statistically significant at all common levels of significance.  Wages increase with age, which given the lack of an experience variable is expected.  The sign on all major groups (with the exception of Education) has the expected positive sign, given the omission of the Arts group.  The estimated mean annual wage income for Arts was \$49,692, and \$50,850 for Education so that particular anomaly is not particularly surprising.  The relationship between educational attainment and wages is positive as expected, and the correlation between earnings and all four types of mismatch is negative and significant.  
+
+Given the commonly known gender gap in wages, the negative coefficient on the female indicator is as expected.  Both urban residence and marriage enter positively which are consistent with other studies.  One unexpected puzzle is the negative coefficient for the Asian or Pacific Islander variable, given that estimated mean annual wage income for all employed individuals over the age of 16 as reported in Table 3 was \$49,931 compared with the omitted White group estimated mean annual wage income of \$45,348.  Upon further investigation, this relationship only holds for some major groups, and the differences in distribution across these major groups appears to account for this seemingly counterintuitive result.
+
+The model is also estimated without the mismatch variables, and those results are reported in Table 6 as well.  The inclusion of the mismatch variables improves the model fit.  The $R^2$ value for the full model is 0.3754 vs. 0.3625 when the mismatch variables are omitted.  The magnitude of the negative impact from any type of mismatch is large ranging from a 29.0-52.1\% reduction in wages.  This negative impact from mismatch generally outweighs any positive gains from obtaining a degree with higher mean earnings.  For example, relative to a degree in Arts, a degree in Engineering raises mean wages by 35.1\%.  Interestingly, even with the mismatch variables included in the model, there is still significant variation in earnings across major groups.  In fact, the inclusion of the mismatch variables does not significantly change the magnitude of the coefficients for any of the major groups\footnote{Note: Without the mismatch variables,  the coefficient estimate for Education is no longer statistically significant.}.  While mismatch can explain variation in wages, it seems to only be a small part of the story when it comes to variation in wages across major groups.  
+
+Furthermore, despite mismatched individuals earning far less than their appropriately matched counterparts, they do still enjoy a premium relative to their counterparts with lower levels of education.  Table 7 reports mean wages for mismatched individuals by major group for both bachelor's and advanced degree holders.  Individuals over age 25 with educational attainment below a bachelor's degree working in jobs that do not require a bachelor's degree earned on average \$30,073.04 annually.  For all major groups, mismatched individuals working in those same occupations earned \$44,175.80 and \$56,539.12 for bachelor's and advanced degree holders respectively.  Despite working in an occupation that does not require a bachelor's degree individuals are still seeing a return to education.  This return does vary across major groups, with terminal bachelor's degree holders with an Education major earning \$32,253.17 vs. \$54,717.57 for their Engineering degree counter parts.
+
+This variation in earnings across major groups for mismatched individuals is hardly surprising given the persistence of the magnitude of the major group coefficients when the mismatch variables were included in the model.  Regardless of whether this variation in returns to schooling reflect skill acquisition or ability signaling, it seems that the unobservable differences between individuals with different degrees matters more than the mismatched share of degree holders across major groups.  
+
+This distinction has implications for any policy proposals aimed at increasing returns to schooling.  Many policy makers have proposed tying public funding for higher education to job placement rates, in an effort to force universities to steer students towards degrees that are more likely to lead to employment following graduation.  These results show, that focusing those efforts on simply looking at job placements in respect to required level of educational attainment is not enough.  While there are certainly differences between the major groups in regards to those labor market outcomes, the differences within those two groups are also important.  Even amongst those individuals that were not mismatched, there is significant variation in annual wage income.  Policy makers should also be aware of not only the overall demand for certain degree holders but also the large variation in wages associated with degree holders that are obtaining jobs that require their level of educational attainment.  
+
+Finally, to address the non-random missing values for wages, I estimate the empirical model for wages in levels using both OLS and a Tobit model.  These missing values do not alter the main findings outlined above, and these results are contained in Tables 11 and 12 in the Appendix.  In addition to the lack of an experience variable, and the endogeneity of major choice itself the changing nature of college enrollment over time is also a cause for concern.  The realized matches measure of mismatch does not account for these changes, and this is an area for future refinement of these results.
+
+\section*{V. Decomposition Across STEM vs. Non-STEM Degrees}
+
+\indent
+\par
+In addition to general proposals aimed at steering students towards majors that are associated with a lower share of mismatch, policy makers have recently stressed the importance of Science, Technology, Engineering, and Math (STEM) degrees in particular to future of U.S. economic growth\footnote{See U.S. Department of Commerce (July 2011).}.  It is well known that STEM degree holders earn more, and enjoy greater job security than non-STEM degree holders.  When considering the differences between the impact of overeducation and job mismatch between two groups of college majors, STEM vs. non-STEM is an intriguing and natural option.  In this section, I explore the differences between these two groups employing several methods.  The definition of what constitutes a STEM degree varies by study.  Here, I aggregate the Biology and Life Science, Computers and Mathematics, Engineering, and Physical Sciences major groups into a single STEM group.  The remaining major groups are aggregated into non-STEM.  Table 8 displays summary statistics for these two groups.  
+
+There is a large difference in gender shares for STEM and non-STEM degree holders, with only 29.5 percent of STEM degree holders were female compared with 58.0 percent amongst non-STEM.  Mean annual wage income for STEM degree holders was \$90,454, and \$67,148 for non-Stem.  STEM degree holders were more likely to be in the labor force (79.6 vs. 75.9 percent) and less likely to be unemployed (3.4 vs. 3.8).  Furthermore, 43.0 percent of STEM degree holders earned a degree beyond a Bachelor's, while 34.0 percent of non-STEM degree holders did so.  There was also a significant mismatch difference between the two groups.  77.8 percent of STEM degree holders were not mismatched, compared to 69.6 percent of non-STEM.  Clearly, there is a significant difference between annual wage income between the two groups and a number of competing forces potentially driving this difference.
+
+As originally described in Oaxaca (1973) and Blinder (1973), I first employ a decomposition of mean wage differentials by the explanatory variables and their coefficients. Table 9 reports these estimates.  Following Blinder (1973) the effects are split between Endowments and Coefficients.  Using a slightly different version of Blinder's notation, we can express the generic log wage equations of the STEM and Non-STEM groups as:
+
+\begin{equation*}
+\begin{split}
+Y^S_i &=\beta^S_0 + \sum_{i=1}^n \beta^S_j \boldsymbol{X}^S_{ji} + u^S_i\text{, and} \\
+Y^N_i &=\beta^N_0 + \sum_{i=1}^n \beta^N_j \boldsymbol{X}^N_{ji} + u^N_i \\
+\end{split}
+\end{equation*}
+
+Where, the $S$ and $N$ superscripts represent the STEM and Non-STEM groups respectively, $Y_i$ represents log wages, and \textbf{$X_{ji}$} contains individual $i$'s value for characteristic $j$ (see Table 9 for the list of included characteristics).  
+
+Ignoring the constant term, the part of the wage differential explained by this proposed regression can be expressed as:
+\begin{equation*}
+\sum_j \beta^S_j \bar{\boldsymbol{X}}^S_j - \sum_j \beta^N_j \bar{\boldsymbol{X}}^N_j
+\end{equation*}
+
+Which, is equivalent to:
+\begin{equation*}
+\sum_j \beta^S_j (\bar{\boldsymbol{X}}^S_j- \bar{\boldsymbol{X}}^N_j) + \sum_j \bar{\boldsymbol{X}}^N_j (\beta^S_j - \beta^N_j )
+\end{equation*}
+
+Yielding the common interpretations of the first sum as "the value of the advantage in endowments possessed by the high-wage group \textit{as evaluated by the high-wage group's wage equation}", and the second as "the difference between how the high-wage equation \textit{would value} the characteristics of the low-wage group and how the low-wage equation \textit{actually values} them\footnote{Blinder (1973) p. 438.  Emphasis original}.  These are the Endowment and Coefficient effects respectively.  
+
+Table 9 reports this mean decomposition from the perspective of the Non-STEM group, for the model that includes mismatch variables and for one that omits them.  Overall, there is a 35.2\% wage penalty for the Non-STEM group.  The first thing to note, is that when mismatch is included in the model the portion of the wage differential explained by endowments increases.  Furthermore, the mismatch variables were statistically significant at all common levels for both the endowment and coefficient effects.  This is an encouraging result, and is consistent with the OLS results that indicated a role for mismatch in explaining variation in wages between different major groups.  Nonetheless, these results also confirm that the difference between the two groups due to this mismatch effect is small compared to other differences.  In particular, the gender differences between the two groups explains a large part of the wage differential (11.4\%).  The largest contribution is from the coefficient on age (20.6\%).  Given the lack of experience variable in the data, I interpret this as a large discrepancy between the returns to seniority between the two groups.  These two effects comprise the bulk of the wage differential explained by the regression.  One other significant contributor appears to be the differences between the share of advanced degree holders, and the returns to those advanced degrees.  Not only does this confirm the difference in the shares of advanced degree holders between the two groups from the summary statistics, but also reveals that there is also a difference in the returns to those advanced degrees between the two groups.  
+
+To provide further insight beyond just differences at the mean, I employ a non-parametric kernel density estimation of the conditional densities, and a decomposition of the wage distributions for STEM and non-STEM degree holders using the method proposed in Dinardo, Fortin, and Lemieux (1996).   In order to simplify graphical analysis, I condense the four types of mismatch into a single mismatched indicator variable.  Figure 5 displays the non-parametric kernel estimated densities for log mean annual wages by STEM and non-STEM degree holders.   Figure 6 displays kernel estimated densities for STEM and non-STEM by the condensed mismatched categorization.  In both figures, the densities are estimated for employed workers over the age of 25.    
+
+Clearly, the densities for the two groups are different in more than just the mean.  The STEM density is essentially of the entire Non-STEM density, indicating higher wages for STEM degree holders throughout the earnings scale.  Furthermore, the impact of mismatch is clear from Figure 6.  As expected, mismatch has a substantial impact on the estimated densities for both STEM and Non-STEM degree holders, and noticeably shifts mass towards lower incomes for both while increasing the variance.  It is also of note, that even amongst mismatched individuals the Non-STEM degree holders estimated density lies to the left throughout the estimated distributions, which is consistent with the variation in wages for mismatched individuals by major group from Table 7.  
+
+In order to capture some capture the effect, of mismatch throughout the distribution I follow Dinardo, et al. (1996) by estimating a counterfactual density for the Non-STEM group.  Following the notation of Dinardo et al. (1996) the counterfactual for the Non-STEM group mixes the distribution characteristics of the STEM group with the wage structure from the Non-STEM group as follows:
+
+\begin{equation*}
+F_{Y_N^C}(y) = \int F_{Y_N|X_N}(y|X) \partial F_{X_S}(X)
+\end{equation*}
+
+The key contribution of their approach to estimating this counterfactual, is by defining $\Psi(X) = \partial F_{X_S}(X)/ \partial F_{X_N}(X)$ and substituting into the above equation yields:
+
+\begin{equation*}
+F_{Y_N^C}(y) = \int F_{Y_N|X_N}(y|X)\Psi(X) \partial F_{X_N}(X)
+\end{equation*}
+
+This allows for the counterfactual distribution to be estimated following an initial estimation of $\Psi(X)$ which is a reweighing factor that reweights the $F_{Y_N}$ distribution.  The initial estimate of $\Psi(X)$ is easily implemented using a simple logit, and is then used to reweigh the estimated distribution or the Non-Stem group to give it the characteristics of the STEM distribution.  Figure 7 displays the estimated STEM density and the estimated Non-STEM counterfactual density using this method.  The first step of estimating $\Psi(X)$ is done utilizing a logit with STEM as the dependent variable and the following covariates: age and indicators for female, advanced degree, race married, urban, number of children, and the four mismatch variables.  These are the same covariates used in the Oaxaca-Blinder specification described above.  Given the importance of the endowment effects from the  results of that decomposition, it is not surprising that reweighing the estimated distribution of Non-STEM group yields a Counterfactual that is closer to the estimated STEM density than the simple kernel density estimate of the Non-STEM density.  
+
+Given the relatively small impact of the mismatch endowment differences in the Oaxaca-Blinder decomposition, Figure 8 reports differences in the DFL estimates of the counterfactual density of Non-STEM and the estimated STEM density for a model that includes the mismatch variables and one that does not.  As before, we unsurprisingly see that while including the mismatch variable does make a difference the impact is relatively small compared to other factors.  
+
+\section*{VI. Conclusion and Potential Future Research}
+
+In this paper, I built on the previous economic literature on overeducation and job mismatch by analyzing the variation in mismatch by fields of degree utilizing the 2011 ACS data.  Having implemented a realized matches method, I find that 28.51 of employed, full-year bachelor's degree holders have a higher level of education than their occupation requires.  This is consistent with the findings of previous studies on overeducation and mismatch in the U.S..  
+
+However, I find that while there are significant differences in annual wage income across aggregated major groups, the variation in mismatch levels across major groups only explains a fraction of the annual wage variation.  Simple OLS estimation indicates that each of the four types of mismatch are negatively correlated with annual wage income, and that this mismatch has a significant impact on an individuals annual wages.  Nonetheless, the substantial variation in wages by major group persists in both the matched and mismatched groups of individuals.    
+
+To further investigate the link between major group and the variation in wages, I simplify the model by aggregating all fields of degree into STEM and Non-STEM groups.  Having done this, I implement a basic Oaxaca-Blinder decomposition to investigate the sources of wage variation.  This analysis confirms the OLS results, that while the variation explained by mismatch is statistically significant, it does not explain the variation across the two groups as much as other differences do.  In particular, the impact of gender differences has a large impact on differences in wages.  One future path for continued research will be to investigate the large share of variation assigned to the differences in coefficients on age.    
+
+Finally, the paper employs some simple kernel density estimates and DFL decomposition to demonstrate the relative impact of mismatch throughout the distribution rather to look beyond the mean analysis of the Oaxaca-Blinder method.  
+
+Additional future paths for research include exploring the link between mismatch and earnings across time utilizing more than just a single year of ACS data.  While the addition of the field of degree question only began in 2009, there is still room for exploring this relationship over time utilizing this rich data set.
+
+Future research can also build on the simple OLS, Oaxaca-Blinder and DFL estimation employed in this paper by utilizing methods for quantile or distribution regression that allow for statistical inference on counterfactual distribution estimation\footnote{See Chernozhukov, Fernandez-Val, and Melly (2013)}.  
+
+Given the paper only employs one of the popular methods of measuring mismatched, future research could expand the analysis beyond the realized matches method by perhaps exploring the relationship in a data set that contains data on self-assesment or job analysis.  Additionally, there is discussion in the mismatch literature about the sensitivity of the realized matches method to cohort effects.  Future analysis could explore the sensitivity of the results to these cohort effects.  
+
+Analyzing this relationship between overeducation job mismatch and field of degree can be strengthened by expanding analysis to a data set that contains information on the level of experience.  In particular it would be useful to explore this relationship in a panel data setting, perhaps making use of the Baccalaureate and Beyond Longitudinal Study that follows cohorts from the National Postsecondary Student Aid Study. 
+
+\section*{References}
+
+\hangindent=2em
+\hangafter=1
+Blinder, Alan S. (1973)., Wage Discrimination: Reduced Form and Structural Estimates.,  \textit{The Journal of Human Resources}. Vol. 8., No. 4 (Autumn, 1973). 436-455.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Carenvale, Anthony., Strohl, Jeff.,  and Melton, Michelle. (2011). What's it Worth: The Economic Value of College Majors. Washington, DC. Center on Education in the Workforce. Georgetown University.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Chernozhukov, Victor., Fernandez-Val, Ivan., and Melly, Blaise. (2013). Inference on Counterfactual Distributions., \textit{Econometrica}. Vol. 81., No. 6 (November, 2013). 2205-2268
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Clark, Brian., Joubert, Clement. and Maurel, Arnauld. (2013). Overeducation and skill mismatch: a dynamic analysis. Working paper. Duke University and University of North Carolina, Chapel Hill. http://www.unc.edu/~joubertc/ClarkJoubertMaurel\_SOLE.pdf
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Dinardo, John., Fortin, Nicole., and Lemieux, Thomas. (1996). Labor Market Institutions and the Distribution of Wages, 1973-1992: A Semiparametric Approach. \textit{Econometrica} 64(5) 1001-1044.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Duncan, J. Greg., and Hoffman, Saul D. (1981). The incidence and effects of overeducation. \textit{Economics of Education Review} 1, 75-86.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Freeman, Richard. (1976). \textit{The Overeducated American}, New York: Academic Press. 
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Kiker, B. F., Santos, Maria C., and de Oliveira, M. Mendes. (1997). Overeducation and undereducation: Evidence for Portugal., \textit{Economics of Education Review}. 16(2), 111-125.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Kocherlakota, Narayana. 2012. "Monetary Policy Transparency: Changes and Challenges." speech at the 17th Annual Entrepreneur \& Investor Luncheon, Minneapolis, Minnesota, June 7, 2012.
+
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Leuven, Edwin., and Oosterbeek, Hessel. (2011). Overeducation and mismatch in the labor market,
+in E. Hanushek, S. Machin \& L.Woessmann, eds, \textit{Handbook of the Economics of
+Education}, Vol. 4, Elsevier.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Oaxaca, Ronald (1973)., Male-Female Wage Differentials in Urban Labor Markets.,  \textit{International Economic Review}., Vol. 14., No. 3 (Oct., 1973)., 693-709.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Ortiz, Luis., and Kucel, Aleksander. (2008). Do Fields of Study Matter for Over-education?. \textit{International Journal of Comparative Sociology}., 49(4-5)., 305-327.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Ruggles, Steven., Alexander, J. Trent., Genadek, Katie., Goeken, Ronald., Schroeder Matthew B., and Sobek, Matthew. Integrated Public Use Microdata Series: Version 5.0 [Machine-readable database]. Minneapolis: University of Minnesota, 2010.
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Taborrok, Alex. (2011). \textit{Launching the Innovation Rennaisance}. New York, NY. TED Conferences, LLC. Location 511-571
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+U.S. Department of Commerce, Economics and Statistics Administration (July 2011). \textit{STEM: Good Jobs Now and for the Future}. Washington, DC. Langdon, David. McKittrick, George. Beede, David. Khan, Beethika. Doms, Mark.  Retrieved from http://esa.gov/sites/default\\/files/reports/documents/stemfinalyjuly14\_1.pdf
+
+\vspace{2mm}
+\noindent
+\hangindent=2em
+\hangafter=1
+Verdugo, Richard R., and Verdugo, Naomi Turner. (1989). The Impact of Surplus Schooling on Earnings: Some Additional Findings. \textit{Journal of Human Resources}, 629-643.
+
+\section*{Appendix}
+\indent
+\par
+
+
+For the 15 major groups, I've followed the lead of Carnevale et, al. with some minor modifications.
+Census recoded Neuroscience from 4003 in 2009 to 3611 in 2011.  "Mulit-Disciplinary or General Science" was recoded from 4008 to 4098 There are two additional codes: "4000 Interdisciplinary and Multi-Disciplinary Studies" and "5008 Materials Sciences".  They dropped "5801 Precision Production and Industrial Arts" and added "6099 Miscellaneous Fine Arts". 
+
+\vspace{2mm}
+I aggregate them in the same way as in Carnevale et al. where possible.  I coded both "4000 Interdisciplinary and Mulit-Disciplinary" and "5008 Materials Sciences" as Physical Sciences.  I coded "6069 Miscellaneous Fine Arts" as Arts.  Additionally, I noticed that in their description of their aggregation the authors failed to include "6102 Communication Disorders Sciences \& Services" in their report.  It is unclear to me if this is simply a typo, or if they omitted it from their analysis entirely.  I include it in the Health category.  
+
+\vspace{2mm}
+The aggregation details are contained in the Table 10 below.  As a check on my aggregation code, I compared my final total number of individuals with a value for my aggregation variable with the original field of degree variable.  These numbers matched.
+
+Table 11 contains OLS estimates of the model using annual wage income in levels.  Table 12 contains Tobit estimates of the model using annual wage income in levels.  The Tobit selection model hardly alters the estimates when compared with the OLS model, therefore the OLS log wage model was used in the main discussion of the paper.    
+
+Table 13 contains results for both the original specification of assigning individuals reporting two fields of degree the first reported field, as well as an alternative specification in which the second reported field is used instead.  The results hardly varied between the two, and as such the findings of the paper are not sensitive to this specification decision.  
+
+ Table 14 describes the share of total mismatch across major groups employing several specifications.  The first column reports shares using the main specification used throughout the paper.  Columns 3-5 employ minor variations on an alternative specification.  This specification relies on the IPUMS generated variable "EdScore90" which assigns a percentage value to each occupation that represents the share of individuals employed in that occupation with at least some college education.  The three columns vary in what the cutoff value for determining the "required" education of a particular occupation.  The overall levels of mismatch vary significantly depending on this cutoff value from just over 8 percent when a cutoff of 50\% is used to over 29 percent when a cutoff of 75\% is used.  Given the main results of of the paper indicate a small role for mismatch in explaining the variation in wage income across major groups, the impact of these alternative specification is small.  The 75\% cutoff specification yields an overall mismatch share close to that of the mode specification.  
+ 
+ Table 15 reports OLS results for the mode specification and the 50\% cutoff specification, which differed by the largest amount amongst the EdScore90 specifications.  Even using this alternative specification, the main conclusions of the paper persist and are not sensitive to the type of realized matches specification.
+
+\begin{center}
+\includegraphics[scale=0.60]{Figure1BeveridgeCurve.pdf}
+\end{center}
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure2Wages.pdf}
+\end{center}
+Wages are reported for employed individuals over the age of 25 for those with a bachelor's degree or more.  
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure3Wages2.pdf}
+\end{center}
+Wages are reported for employed individuals over the age of 25 for those with a terminal bachelor's degree.  
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure4Mismatch.pdf}
+\end{center}
+See section 2 for mismatch definitions.  Shares are reported for employed individuals over the age of 25.  
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure5STEM.pdf}
+\end{center}
+Densities are estimated for employed individuals over the age of 25 for those with a bachelor's degree or more.  
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure6Match.pdf}
+\end{center}
+Densities are estimated for employed individuals over the age of 25 for those with a bachelor's degree or more.  See section 2 for mismatch definitions.
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure7Updated.pdf}
+\end{center}
+Densities are estimated for employed individuals over the age of 25 for those with a bachelor's degree or more.  See section 2 for mismatch definitions.  The counterfactual distribution was estimated a DFL approach.  See section 5 for further details. The counterfactual was estimated with the full specification which contains: age and indicators for female, advanced degree, race variables, married, urban, number of children and the four mismatch variables.
+
+\begin{center}
+\includegraphics[scale=1.0]{Figure8Updated.pdf}
+\end{center}
+Densities are estimated for employed individuals over the age of 25 for those with a bachelor's degree or more.  See section 2 for mismatch definitions.  The all variables specification contains: age and indicators for female, more than a bachelor's degree, race variables, married, urban, number of children and the four mismatch variables.  The except mismatch omits all four mismatch variables.     
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c  c}
+\hline\hline
+\multicolumn{4}{c}{\textbf{Table 1: CPS \& ACS Employment by Educational Attainment}} \\
+\multicolumn{4}{c}{\textbf{and Required Education Measure Comparison}} \\
+\hline
+ & & Some College or  & Bachelor's Degree \\
+  & HS or Less & Associate's Deg & or More \\
+\hline
+BLS Data & 35.7 & 27.7 & 36.6   \\
+ACS Data & 34.0 & 31.1 & 34.9  \\
+Required Education & 40.6 & 22.8 & 36.6  \\
+\hline
+Number of Observations\textsuperscript{a} & 479,460 & 275,467 & 446,558 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\hspace{10mm}\small{ACS data are also reported for individuals that were employed and over 25 years old.}  
+
+\hspace{10mm}\small{\textsuperscript{a}Number of Observations are for Required Education.} 
+
+
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{|l| l |l|}
+\hline\hline
+\multicolumn{3}{c}{\textbf{Table 2: Major Groups}} \\
+\hline\hline \rowcolor{Gray}
+ Agriculture & Arts & Biology  \\
+  \rowcolor{Gray}
+  and Natural Resources & & and Life Science \\
+ \hline
+ Business & Communications & Computers \\
+   & and Journalism & and Mathematics \\
+\hline  \rowcolor{Gray}
+Education & Engineering & Health  \\
+ \rowcolor{Gray}
+ & & \\
+ \hline
+Humanities & Industrial Arts & Law \\
+and Liberal Arts & and Consumer Services & and Public Policy\\
+\hline  \rowcolor{Gray}
+Physical Sciences & Psychology & Social Science \\
+ \rowcolor{Gray}
+ & and Social Work &   \\
+  \hline\hline
+\end{tabular} 
+\end{center} 
+
+
+\scriptsize{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c c c}
+\hline\hline
+\multicolumn{9}{c}{\textbf{Table 3: Summary Statistics}} \\
+\hline
+ & \rotatebox{80}{All} & \rotatebox{80}{Male} & \rotatebox{80}{Female} & \rotatebox{80}{White} & \rotatebox{80}{Black} & \rotatebox{80}{Hispanic or Latino} & \rotatebox{80}{Asian or Pacific Islander} & \rotatebox{80}{Other Race} \\
+\hline
+Percent of All Observations & 100.0 & 49.2 & 50.8 & 63.3 & 12.3 & 16.7 & 4.9 & 2.9 \\
+Mean Age\textsuperscript{a} & 37.5 & 36.4  & 38.6  & 40.9  & 34.4 & 29.4 & 36.2 & 27.1 \\
+ & (22.8) & (22.2) & (23.2) & (23.1) & (21.5) & (20.1) & (20.8) & (21.0) \\
+Urban\textsuperscript{b} & 83.1 & 82.8 & 83.4 & 78.6 & 88.3 & 92.0 & 96.5 & 78.6 \\
+Married \textsuperscript{c} & 57.3 & 60.4 & 54.3 & 60.7 & 36.0 & 54.7 & 68.7 & 47.9 \\
+\underline{Number of Children\textsuperscript{c}} &  &  &  &  &  &  &  &  \\
+\hspace{2.5mm}0 & 59.9 & 64.2 & 56.0 & 63.5 & 60.0 & 46.8 & 48.1 & 57.9 \\
+\hspace{2.5mm}1 & 18.2 & 15.6 & 20.7 & 17.3 & 19.5 & 19.4 & 24.7 & 19.0 \\
+\hspace{2.5mm}2 & 13.8 & 12.8 & 14.7 & 12.8 & 12.2 & 18.1 & 19.5 & 13.8 \\
+\hspace{2.5mm}3 & 5.7 & 5.3 & 6.0 & 4.7 & 5.5 & 10.7 & 5.7 & 6.0 \\
+\hspace{2.5mm}4 & 1.7 & 1.6 & 1.8 & 1.3 & 1.9 & 3.6 & 1.4 & 2.2 \\
+\hspace{2.5mm}5 & 0.5 & 0.4 & 0.5 & 0.3 & 0.6 & 1.0 & 0.4 & 0.8 \\
+\hspace{2.5mm}6 & 0.2 & 0.1 & 0.2 & 0.1 & 0.2 & 0.3 & 0.2 & 0.2 \\
+\hspace{2.5mm}7 & 0.1 & 0.1 & 0.1 & 0.0 & 0.1 & 0.1 & 0.1 & 0.1 \\
+\hspace{2.5mm}8 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+\hspace{2.5mm}9+ & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+Mean Annual Wages\textsuperscript{d} (\$) & 41569 & 48721 & 33660 & 45348 & 33331 & 28659 & 49931 & 35127 \\
+ & (48950) & (57318) & (35964) & (52970) & (33483) & (31575) & (56611) & (40538) \\
+Labor Force Participation\textsuperscript{e} & 64.0 & 69.3 & 58.9  & 63.5 & 62.0  & 67.4  & 65.8  & 62.4 \\
+Unemployment Rate \textsuperscript{e} & 6.5 & 7.3 & 5.8  & 5.3 & 10.8 & 8.3 & 5.3 & 9.3 \\
+\underline{Educational Attainment\textsuperscript{c}}  &  &  &  &  &  &  &  &  \\
+Less Than Bachelor's:  & 71.4 & 71.2 & 71.6 & 68.2 & 81.3 & 86.6 & 50.6 & 75.7 \\
+\hspace{2.5mm}Less Than High School & 14.1 & 14.8 & 13.5 & 8.9 & 17.3 & 36.9 & 14.8 & 13.8 \\
+\hspace{2.5mm}High School Degree & 28.4 & 28.8 & 28.0 & 29.1 & 31.5 & 27.0 & 16.1 & 26.8 \\
+\hspace{2.5mm}Some College & 21.2 & 20.8 & 21.6 & 21.8 & 25.1 & 17.3 & 13.11 & 26.1 \\
+\hspace{2.5mm}Associate's Degree & 7.8 & 6.9 & 8.6 & 8.3 & 7.5 & 5.5 & 6.6 & 9.0 \\
+Bachelor's:  & 17.9 & 17.8 & 18.0 & 19.9 & 12.1 & 9.2 & 29.0 & 15.3 \\
+More Than Bachelor's:  & 10.7 & 11.0 & 10.4 & 12.0 & 6.6 & 4.2 & 20.4 & 9.0 \\
+\hspace{2.5mm}Master's Degree & 7.5 & 7.0 & 8.0 & 8.4 & 5.2 & 2.9 & 13.1 & 6.3 \\
+\hspace{2.5mm}Professional Degree & 1.9 & 2.4 & 1.5 & 2.2 & 0.8 & 0.9 & 3.8 & 1.7 \\
+\hspace{2.5mm}Doctoral Degree & 1.2 & 1.6 & 0.9 & 1.3 & 0.6 & 0.4 & 3.5 & 1.0 \\
+\hline
+Number of Observations & 3,112,017 & 1,518,498 & 1,593,519 & 2,105,780 & 338,952 & 427,432 & 142,688 & 97,165 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\small{Values in parentheses are standard deviations. \textsuperscript{a}Full sample. \textsuperscript{b}Percent, full sample. \textsuperscript{c}Percent, ages 25 and over.  \textsuperscript{d}Employed, ages 16 and over. \textsuperscript{e}Percent, ages 16 and over. }
+
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c}
+\hline\hline
+\multicolumn{7}{c}{\textbf{Table 4: Summary Statistics by Major Group}} \\
+\hline
+ & \rotatebox{80}{All} & \rotatebox{80}{\shortstack[1]{Agriculture \& \\ Natural Resources}} & \rotatebox{80}{Arts} & \rotatebox{80}{\shortstack[1]{Biology \& \\ Life Science}} & \rotatebox{80}{Business} & \rotatebox{80}{\shortstack[1]{Communications \\ \& Journalism}}  \\
+\hline
+Percent of All Majors & 100.0 & 1.4 & 3.8 & 4.8 & 20.3 & 3.7  \\
+Mean Age & 47.3 & 48.9 & 44.2 & 44.0 & 46.0 & 41.0 \\
+Male & 48.2 & 71.6 & 40.1 & 51.7 &57.2  & 40.6 \\
+Female  & 51.8 & 28.4 & 60.0 & 48.3 & 42.8 & 59.4 \\
+Urban & 89.2 & 69.4 & 91.9 & 89.8 & 91.0 & 93.1 \\
+Married  & 63.2 & 72.8 & 51.4 & 62.0 & 64.8 & 54.8  \\
+\underline{Race/Ethnicity}  & & & & & &  \\
+White & 75.5 & 85.4 & 79.2 & 72.6 & 73.9 & 78.8 \\
+Black  & 7.4 & 3.5 & 4.5 & 6.1 & 8.8 & 8.1 \\
+Hispanic or & & & & & &  \\
+Latino & 6.5 & 4.6 & 6.3 & 5.6 & 7.4 & 6.8 \\
+Asian or & & & & & &  \\
+Pacific Islander & 8.8 & 5.2 & 8.1& 13.5 & 8.3 & 4.4 \\
+Other Race & 1.8 & 1.3 & 2.0 & 2.2 & 1.6 & 1.9 \\
+\underline{Number of Children} &  &  &  &  &  &  \\
+\hspace{2.5mm}0 & 60.4 & 60.2 & 68.9 & 60.6 & 57.0 & 61.2 \\
+\hspace{2.5mm}1 & 16.7 & 16.4 & 14.6 & 16.0 & 17.3 & 15.9 \\
+\hspace{2.5mm}2 & 15.7 & 15.8 & 11.9 & 16.2 & 17.5 & 16.1 \\
+\hspace{2.5mm}3 & 5.5 & 5.8 & 3.6 & 5.4 & 6.3 & 5.3 \\
+\hspace{2.5mm}4+ & 1.8 & 1.8 & 1.1 & 1.8 & 1.9 & 1.5 \\
+\underline{Employment} & & & & & & \\
+Mean Annual Wages\textsuperscript{a} (\$) & 72610 & 62637 & 49692 & 92112 & 77085 & 61203 \\
+\hspace{2.5mm}All Education levels & (70147)& (66016) & (52217) & (95846) & (72822) & (59257) \\
+Mean Annual Wages\textsuperscript{a} (\$) & 62947 & 55843 & 46547 & 55126 & 70790 & 57545 \\
+\hspace{2.5mm}Bachelor's Only & (59199) & (59281) & (48970) & (48604) & (67101) & (55766) \\
+Labor Force Participation & 76.7 & 78.2 & 78.0 & 80.5 & 81.2 & 83.9 \\
+Unemployment Rate & 3.7 & 2.5 & 5.1 & 2.7 & 4.3 & 5.5 \\
+\underline{Educational Attainment}  &  &  &  &  &  &  \\
+Bachelor's:  & 64.0 & 72.0 & 75.8 & 44.4 & 78.1 & 79.3 \\
+More Than Bachelor's:  & 36.0 & 28.0 & 24.2 & 55.6 & 21.9 & 20.7  \\
+\hspace{2.5mm}Master's Degree & 25.3 & 17.8 & 19.2 & 20.2 & 17.8 & 16.2 \\
+\hspace{2.5mm}Professional Degree & 6.5 & 5.0 & 2.6 & 22.9 & 3.3 & 3.2 \\
+\hspace{2.5mm}Doctoral Degree & 4.1 & 5.2 & 2.3 & 12.5 & 0.9 & 1.3 \\
+\hline
+Number of Observations & 627,141 & 10,255 & 23,239 & 30,576 & 120,665 & 21,613 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\small{Values in parentheses are standard deviations. \textsuperscript{a}Employed, worked over 48 weeks.}
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c}
+\hline\hline
+\multicolumn{7}{c}{\textbf{Table 4 (continued): Summary Statistics by Major Group}} \\
+\hline
+ & \rotatebox{80}{All} & \rotatebox{80}{\shortstack[1]{Computers \& \\ Mathematics}} & \rotatebox{80}{Education} & \rotatebox{80}{Engineering} & \rotatebox{80}{Health} & \rotatebox{80}{\shortstack[1]{Humanities \& \\ \& Liberal Arts}}  \\
+\hline
+Percent of All Majors & 100.0 & 4.6 & 14.0 & 8.8 & 7.2 & 10.6  \\
+Mean Age & 47.3 & 43.2 & 53.6 & 48.8 & 47.5 & 48.5 \\
+Male & 48.2 & 68.2 & 24.4 & 84.7 & 17.8 & 44.9 \\
+Female & 51.8 & 31.2 & 75.6 & 15.3 & 82.2 & 55.1 \\
+Urban & 89.2 & 93.4 & 81.2 & 92.1 & 88.2 & 90.3 \\
+Married  & 63.2 & 64.3 & 66.7 & 72.2 & 64.4 & 59.2 \\
+\underline{Race/Ethnicity}  & & & & & &  \\
+White & 75.5 &  64.5 & 82.6 & 69.8 & 72.8 & 80.5 \\
+Black & 7.4 & 7.9 & 7.2 & 4.2 & 8.5 & 5.5 \\
+Hispanic or &  & & & & &  \\
+Latino & 6.5 & 6.1 & 5.5 & 7.2 & 5.5 & 5.8 \\
+Asian or & & & & & &  \\
+Pacific Islander & 8.8 & 19.5 & 3.3 & 17.1 & 11.5 & 6.2 \\
+Other Race & 1.8 & 1.9 & 1.4 & 1.7 & 1.7 & 2.0 \\
+\underline{Number of Children} &  &  &  &  &  &  \\
+\hspace{2.5mm}0 & 60.4 & 57.6 & 63.3 & 58.0 & 55.5 & 65.9 \\
+\hspace{2.5mm}1 & 16.7 & 17.5 & 16.4 & 17.3 & 18.6 & 14.9 \\
+\hspace{2.5mm}2 & 15.7 & 17.6 & 13.4 & 17.1 & 17.2 & 13.2 \\
+\hspace{2.5mm}3 & 5.5 & 5.6 & 5.1 & 5.8 & 6.5 & 4.4 \\
+\hspace{2.5mm}4+ & 1.8 & 1.8 & 1.8 & 1.8 & 2.2 & 1.7 \\
+\underline{Employment} & & & & & & \\
+Mean Annual Wages\textsuperscript{a} (\$) & 72610 & 84788 & 50850 & 93010 & 71312 & 66139 \\
+\hspace{2.5mm}All Education levels & (70147) & (65445) & (40206) & (72602) & (56786) & (73714) \\
+Mean Annual Wages\textsuperscript{a} (\$) & 62947 & 76794 & 43632 & 82944 & 61506 & 54138 \\
+\hspace{2.5mm}Bachelor's Only & (59199) & (58981) & (38116) & (63606) & (41282) & (58611) \\
+Labor Force Participation & 76.7 & 84.2 & 63.1 & 78.4 & 78.4 & 72.8 \\
+Unemployment Rate & 3.7 & 4.0 & 2.3 & 3.6 & 2.4 & 4.1 \\
+\underline{Educational Attainment}  &  &  &  &  &  &  \\
+Bachelor's:  & 64.0 & 65.7 & 54.1 & 62.2 & 66.0 & 56.9 \\
+More Than Bachelor's:  & 36.0 & 34.4 & 45.9 & 37.8 & 34.0 & 43.1 \\
+\hspace{2.5mm}Master's Degree & 25.3 & 27.4 & 39.6 & 29.4 & 21.1 & 27.7 \\
+\hspace{2.5mm}Professional Degree & 6.5 & 2.9 & 3.5 & 3.9 & 8.7 & 9.6 \\
+\hspace{2.5mm}Doctoral Degree & 4.1 & 4.1 & 2.7 & 4.5 & 4.2 & 5.8 \\
+\hline
+Number of Observations & 627,141 & 27,127 & 96,168 & 54,172 & 44,500 & 69,669 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\small{Values in parentheses are standard deviations. \textsuperscript{a}Employed, worked over 48 weeks.}
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c}
+\hline\hline
+\multicolumn{7}{c}{\textbf{Table 4 (continued): Summary Statistics by Major Group}} \\
+\hline
+ & \rotatebox{80}{All} & \rotatebox{80}{\shortstack[1]{Industrial Arts \& \\ Consumer Services}} & \rotatebox{80}{\shortstack[1]{Law \& \\ Public Policy}} & \rotatebox{80}{Physical Sciences} & \rotatebox{80}{\shortstack[1]{Psychology \& \\ Social Work}} & \rotatebox{80}{Social Science}  \\
+\hline
+Percent of All Majors & 100.0 & 2.2 & 1.9 & 3.5 & 5.9 & 7.3  \\
+Mean Age & 47.3 & 43.9 & 41.8 & 49.6 & 44.9 & 46.9 \\
+Male & 48.2 & 41.7 & 57.1 & 64.0 & 28.7 & 55.3 \\
+Female  & 51.8 & 58.3 & 42.9 & 36.0 & 71.3 & 44.7 \\
+Urban & 89.2 & 86.7 & 88.7 & 89.7 & 89.4 & 92.1\\
+Married  & 63.2 & 60.9 & 56.2 & 67.1 & 56.4 & 60.6 \\
+\underline{Race/Ethnicity}  & & & & & &  \\
+White & 75.5 & 79.8 & 68.7 & 72.9 & 74.5 & 74.7 \\
+Black & 7.4 & 6.5 & 15.7 & 6.0 & 10.5 & 8.5 \\
+Hispanic or &  & & & & &  \\
+Latino & 6.5 & 6.1 & 9.9 & 5.8 & 7.8 & 6.6 \\
+Asian or & & & & & &  \\
+Pacific Islander & 8.8 & 5.9 & 3.5 & 13.6 & 5.0 & 8.4 \\
+Other Race & 1.8 & 1.7 & 2.3 & 1.7 & 2.2 & 1.9 \\
+\underline{Number of Children} &  &  &  &  &  &  \\
+\hspace{2.5mm}0 & 60.4 & 60.0 & 56.2 & 61.0 & 59.9 & 62.5 \\
+\hspace{2.5mm}1 & 16.7 & 15.7 & 18.5 & 16.6 & 17.4 & 15.8 \\
+\hspace{2.5mm}2 & 15.7 & 16.6 & 17.3 & 15.7 & 15.6 & 14.9 \\
+\hspace{2.5mm}3 & 5.5 & 5.7 & 5.9 & 5.1 & 5.4 & 5.2 \\
+\hspace{2.5mm}4+ & 1.8 & 2.1 & 2.0 & 1.6 & 1.7 & 1.6 \\
+\underline{Employment} & & & & & & \\
+Mean Annual Wages\textsuperscript{a} (\$) & 72610  & 55127 & 62123 & 89603 & 57358 & 82605 \\
+\hspace{2.5mm}All Education levels & (70147) & (48460) & (50679) & (83498) & (55654) & (87197) \\
+Mean Annual Wages\textsuperscript{a} (\$) & 62947 & 51309 & 56183 & 64974 & 47763 & 67912 \\
+\hspace{2.5mm}Bachelor's Only & (59199) & (44862) & (41144) & (58202) & (44768) & (71900) \\
+Labor Force Participation & 76.7 & 78.0 & 85.8 & 75.3 & 78.3 & 77.1 \\
+Unemployment Rate & 3.7 & 3.6 & 4.7 & 3.2 & 4.5 & 4.2 \\
+\underline{Educational Attainment}  &  &  &  &  &  &  \\
+Bachelor's:  & 64.0 & 76.1 & 76.0 & 49.6 & 54.3 & 59.0 \\
+More Than Bachelor's:  & 36.0 & 24.0 & 24.0 & 50.4 & 45.7 & 41.0 \\
+\hspace{2.5mm}Master's Degree & 25.3 & 19.0 & 17.2 & 23.8 & 33.3 & 24.8 \\
+\hspace{2.5mm}Professional Degree & 6.5 & 2.9 & 5.5 & 11.7 & 6.1 & 12.1 \\
+\hspace{2.5mm}Doctoral Degree & 4.1 & 2.0 & 1.4 & 15.0 & 6.3 & 4.1 \\
+\hline
+Number of Observations & 627,141 & 13,657 & 10,936 & 21,819 & 36,356 & 46,389 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\small{Values in parentheses are standard deviations. \textsuperscript{a}Employed, worked over 48 weeks.}
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c}
+\hline\hline
+\multicolumn{6}{c}{\textbf{Table 5: Mismatch Types by Major Group}} \\
+\hline
+ & No Mismatch & Type I & Type II & Type III & Type IV   \\
+\hline
+All & 71.49 & 10.56 & 12.76 & 2.24 & 2.94 \\
+Agriculture \& Natural Resources & 51.05 & 28.44 & 14.57 & 3.58 & 2.37  \\
+Arts & 66.64 & 14.98 & 14.04 & 2.18 & 2.16  \\
+Biology \& Life Science & 76.17 & 7.44 & 9.71 & 3.09 & 3.60 \\
+Business & 64.57 & 14.14 & 16.99 & 1.75 & 2.56 \\
+Communications \& Journalism & 66.15 & 13.25 & 16.74 & 1.48 & 2.39 \\
+Computers \& Mathematics & 80.60 & 6.99 & 8.73 & 1.61 & 2.07 \\
+Education & 80.06 & 7.08 & 8.14 & 2.10 & 2.61 \\
+Engineering & 77.77 & 10.45 & 6.16 & 3.20 & 2.42 \\
+Health & 82.19 & 4.96 & 9.26 & 1.54 & 2.06 \\
+Humanities \& Liberal Arts & 70.01 & 10.29 & 13.21 & 2.76 & 3.72 \\
+Industrial Arts \& Consumer Services & 61.42 & 17.16 & 16.41 & 2.31 & 2.69 \\
+Law \& Public Policy & 41.18 & 11.44 & 38.37 & 1.87 & 7.15 \\
+Physical Sciences & 76.02 & 8.79 & 9.08 & 2.90 & 3.21 \\
+Psychology \& Social Work & 73.41 & 7.85 & 12.70 & 2.22 & 3.83 \\
+Social Science & 68.79 & 10.20 & 14.43 & 2.55 & 4.02 \\
+\hline
+Number of Observations & 306,259 & 43,087 & 52,541 & 9,55 & 12,473 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+All values are reported for employed individuals over 25 years old. Type I: Bachelor's degree holder with a job that requires only a high school degree.  Type II: Bachelor's degree holder with a job that requires only some college  Type III: Advanced degree holder with a job that requires only a high school degree.  Type IV: Advanced degree holder with a job that requires only some college  
+
+
+\scriptsize{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c c c}
+\hline\hline
+\multicolumn{9}{c}{\textbf{Table 6: OLS Results}} \\
+\hline
+ & \multicolumn{4}{c}{\underline{With Mismatch}} & \multicolumn{4}{c}{\underline{Without Mismatch}} \\
+ & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}  & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}  \\
+\hline
+Age & 0.109 & (0.0005) & 210.84 & 0.000 & 0.110 & (0.0005) & 210.67 & 0.000 \\
+Age Squared & -0.001 & (0.0000) & -187.33 & 0.000 & -0.001 & (0.0000) & -187.36 & 0.000 \\
+Female & -0.327 & (0.0019) & -173.59 & 0.000 & -0.322 & (0.0019) & -169.89 & 0.000 \\
+Black & -0.138 & (0.0031) & -45.11 & 0.000 & -0.144 & (0.0031) & -46.54 & 0.000 \\
+Hispanic or Latino & -0.175 & (0.0027) & -64.58 & 0.000 & -0.182 & (0.0027) & -64.49 & 0.000 \\
+Asian or Pacific Islander & -0.137 & (0.0042) & -32.65 & 0.000 & -0.141 & (0.0043) & -32.85 & 0.000 \\
+Other Race & -0.083 & (0.0065) & -12.79 & 0.000 & -0.087 & (0.0066) & -13.20 & 0.000 \\
+Married  & 0.121 & (0.0021) & 58.84 & 0.000 & 0.127 & (0.0021) & 60.89 & 0.000 \\
+Urban  & 0.167 & (0.0024) & 69.04 & 0.000 & 0.170 & (0.0024) & 68.94 & 0.000 \\
+Number of Children  & 0.006 & (0.0009) & 6.96 & 0.000 & 0.007 & (0.0009) & 7.33 & 0.000 \\
+Some College & 0.232 & (0.0023) & 103.13 & 0.000 & 0.231 & (0.0023) & 102.46 & 0.000 \\
+Bachelor's Only & 0.539 & (0.0098) & 54.82 & 0.000 & 0.383 & (0.0099) & 38.75 & 0.000 \\
+More Than Bachelor's & 0.752 & (0.0100) & 75.11 & 0.000 & 0.669 & (0.0102) & 65.90 & 0.000 \\
+Mismatch 1 & -0.454 & (0.0060) & -75.22 & 0.000 & -- & -- & -- & -- \\
+Mismatch 2 & -0.290 & (0.0047) & -60.61 & 0.000 & -- & -- & -- & -- \\
+Mismatch 3 & -0.521 & (0.0136) & -38.37 & 0.000 & -- & -- & -- & -- \\
+Mismatch 4 & -0.364 & (0.0098) & -37.16 & 0.000 & -- & -- & -- & -- \\
+Agriculture \& Natural Resources & 0.186 & (0.0151) & 12.34 & 0.000 & 0.132 & (0.0154) & 8.61 & 0.000 \\
+Biology \& Life Science & 0.319 & (0.0120) & 26.53 & 0.000 & 0.334 & (0.0123) & 27.20 & 0.000 \\
+Business & 0.301 & (0.0101) & 29.98 & 0.000 & 0.309 & (0.0103) & 30.06 & 0.000 \\
+Communications \& Journalism & 0.191 & (0.0122) & 15.64 & 0.000 & 0.201 & (0.0125) & 16.07 & 0.000 \\
+Computers \& Mathematics & 0.325 & (0.0114) & 28.55 & 0.000  & 0.384 & (0.0117) & 32.86 & 0.000 \\
+Education & -0.034 & (0.0104) & -3.39 & 0.001  & 0.006 & (0.0106) & 0.56 & 0.575 \\
+Engineering & 0.351 & (0.0106) & 33.03 & 0.000 & 0.389 & (0.0109) & 35.80 & 0.000 \\
+Health & 0.312 & (0.0111) & 28.16 & 0.000 & 0.373 & (0.0113) & 33.01 & 0.000 \\
+Humanities \& Liberal Arts & 0.097 & (0.0109) & 8.89 & 0.000 & 0.102 & (0.0111) & 9.14 & 0.000 \\
+Industrial Arts \& Consumer Services & 0.103 & (0.0136) & 7.59 & 0.000 & 0.090 & (0.0139) & 6.46 & 0.000 \\
+Law \& Public Policy & 0.240 & (0.0136) & 17.58 & 0.000 & 0.174 & (0.0138) & 12.60 & 0.000 \\
+Physical Sciences & 0.289 & (0.0130) & 22.05 & 0.000 & 0.314 & (0.0133) & 23.53 & 0.000 \\
+Psychology \& Social Work & 0.087 & (0.0113) & 7.73 & 0.000 & 0.103 & (0.0115) & 9.00 & 0.000 \\
+Social Science & 0.289 & (0.0112) & 25.89 & 0.000 & 0.294 & (0.0115) & 25.62 & 0.000 \\
+Constant & 7.71 & (0.0106) & 730.27 & 0.000 & 7.69 & (0.0106) & 723.47 & 0.000 \\
+\hline
+$R^2$ & 0.3754 & & & & 0.3625 & & \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\hspace{12mm} \small{The values in parentheses are reported standard errors that employ White's correction for heteroskedasticity.} 
+
+\scriptsize{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c}
+\hline\hline
+\multicolumn{3}{c}{\textbf{Table 7: Mean Wages for Mismatched Individuals by Major Group}} \\
+\hline
+ & Bachelor's Only & Advanced Degree \\
+\hline
+Some College or Less & 30073.04 & 30073.04 \\
+All Majors & 44175.80 & 56539.12 \\
+Agriculture \& Natural Resources & 43201.55 & 58863.34 \\
+Arts & 32477.01 & 37666.76 \\
+Biology \& Life Science & 41187.17 & 64233.98 \\
+Business & 50378.72 & 66332.90 \\
+Communications \& Journalism & 41542.05 & 48970.04 \\
+Computers \& Mathematics & 47873.47 & 67545.85  \\
+Education & 32253.17 & 32258.86 \\
+Engineering & 54717.57 & 73403.39 \\
+Health & 41957.63 & 55291.97 \\
+Humanities \& Liberal Arts & 37542.83 & 46529.37 \\
+Industrial Arts \& Consumer Services & 39498.48 & 46972.14 \\
+Law \& Public Policy & 49913.64 & 61444.27 \\
+Physical Sciences & 46750.25 & 72496.30 \\
+Psychology \& Social Work & 35357.61 & 46227.25 \\
+Social Science & 47499.96 & 61539.98 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c}
+\hline\hline
+\multicolumn{4}{c}{\textbf{Table 8: Summary Statistics by STEM vs. Non-STEM}} \\
+\hline
+ & All & STEM  & Non-STEM  \\
+\hline
+Percent of All Majors & 100.0 & 21.77 & 78.23 \\
+Mean Age & 47.3 & 46.7 & 47.4  \\
+Male & 48.2 & 70.5 & 42.0  \\
+Female  & 51.8 & 29.5 & 58.0  \\
+Urban & 89.2 & 91.5 & 88.5 \\
+Married  & 63.2 & 67.5 & 62.0 \\
+\underline{Race/Ethnicity}  & & &  \\
+White & 75.5 & 69.8 & 77.1  \\
+Black & 7.4 & 5.7 & 7.9  \\
+Hispanic or & & &   \\
+Latino & 6.5 & 6.4 & 6.5 \\
+Asian or & & &  \\
+Pacific Islander & 8.8 & 16.3 & 6.8 \\
+Other Race & 1.8 & 1.9 & 1.7 \\
+\underline{Number of Children} &  &  &  \\
+\hspace{2.5mm}0 & 60.4 & 59.0 & 60.8 \\
+\hspace{2.5mm}1 & 16.7 & 16.9 & 16.6  \\
+\hspace{2.5mm}2 & 15.7 & 16.8 & 15.4  \\
+\hspace{2.5mm}3 & 5.5 & 5.5 & 5.5  \\
+\hspace{2.5mm}4+ & 1.8 & 1.8 & 1.8 \\
+\underline{Employment} & & & \\
+Mean Annual Wages\textsuperscript{a} (\$) & 72610  & 90454 & 67148  \\
+\hspace{2.5mm}All Education levels & (70147) & (78360) & (66422)  \\
+Mean Annual Wages\textsuperscript{a} (\$) & 62947 & 74475 & 59964  \\
+\hspace{2.5mm}Bachelor's Only & (59199) & (60426) & (58495) \\
+Labor Force Participation & 76.7 & 79.6 & 75.9 \\
+Unemployment Rate & 3.7 & 3.4 & 3.8 \\
+\underline{Educational Attainment}  &  &  & \\
+Bachelor's:  & 64.0 & 57.0 & 66.0 \\
+More Than Bachelor's:  & 36.0 & 43.0 & 34.0 \\
+\hspace{2.5mm}Master's Degree & 25.3 & 26.0 & 25.2 \\
+\hspace{2.5mm}Professional Degree & 6.5 & 9.1 & 5.8 \\
+\hspace{2.5mm}Doctoral Degree & 4.1 & 7.9 & 3.1 \\
+\underline{Mismatch}  &  &  & \\
+None:  & 71.5 & 77.8 & 69.6 \\
+Type I:  & 10.6 & 8.7 & 11.1 \\
+Type II:  & 12.8 & 8.0 & 14.2 \\
+Type III:  & 2.2 & 2.8 & 2.1 \\
+Type IV:  & 2.9 & 2.7 & 3.0 \\
+\hline
+Number of Observations & 627,141 & 133,694 & 493,447 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\small{\textsuperscript{a}Employed, worked over 48 weeks.}
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c }
+\hline\hline
+\multicolumn{7}{c}{\textbf{Table 9: OB Decomposition }} \\
+\hline
+ & \multicolumn{3}{c}{\underline{With Mismatch}} & \multicolumn{3}{c}{\underline{Without Mismatch}} \\
+ & Total & Endowments  & Coefficients & Total & Endowments  & Coefficients \\
+\hline
+Overall & -35.2\% & -18.2\% & -17.3\% &  -35.2\% & -16.1\% & -20.4\% \\
+Age & -20.3\% & 0.3\% & -20.6\% & -17.5\% & 0.3\% &  -17.8\% \\
+Female  & -11.4\% & -10.1\% & -1.3\% & -10.2\% & -10.5\% &  0.3\% \\
+Urban & 0.6\% & -1.2\% & 1.8\% & -1.9\% & -1.4\% & -0.5\% \\
+Married  & -5.4\% & -1.0\% & -4.4\% & -5.6\% & -1.1\% & -4.5\% \\
+No. of Children & -3.8\% & -0.5\% & -3.3\% & -3.4\% & -0.5\% & -2.9\% \\
+\underline{Race/Ethnicity}  & & & &  &  &  \\
+Black & 0.0\% & -0.4\% & 0.4\% & 0.0\% & -0.5\% & 0.5\% \\
+Hispanic or & & & &  &  &   \\
+Latino & 0.3\% & -0.0\% & 0.3\% & 0.4\% & -0.1\% & 0.5\% \\
+Asian or & & & &  &  &  \\
+Pacific Islander & 1.8\% & 0.9\% & 0.9\% & 1.4\% & 0.9\% & 0.5\% \\
+Other Race & 0.1\% & 0.0\% & 0.1\% & 0.1\% & 0.0\% & 0.1\% \\
+\underline{Education}  &  &  & &  &  & \\
+Advanced Degree:  & -4.7\% & -2.4\% & -2.3\% & -6.2\% & -3.3\% & -2.9\% \\
+\underline{Mismatch}  &  &  & &  &  & \\
+Type I:  & -0.9\% & -1.3\% & 0.4\% & - & - & - \\
+Type II:  & -1.4\% & -2.6\% & 1.2\% & - & - & - \\
+Type III:  & 0.1\% & 0.4\% & -0.3\% & - & - & - \\
+Type IV:  & 0.1\% & -0.2\% & 0.3\%  & - & - & - \\
+Constant & 9.6\% & - & 9.6\% & 6.4\% & - & 6.4\% \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+All values are for individuals that are employed and over 25 years old.  Decomposition is done from the perspective of the Non-STEM group.  Note: percentages may not sum due to rounding and the omission of a negligible overall interaction impact.  See section 5 for estimation details.
+
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begingroup \scriptsize
+\begin{tabular}{|l| l| l| l |l|}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 10: Aggregation of Major Fields}} \\
+\hline\hline 
+\textbf{Agriculture} & \textbf{Arts} & \textbf{Biology} & \textbf{Business} & \textbf{Communications}  \\
+ \textbf{\& Natural Resurces} &\textbf{} & \textbf{\& Life Sciences} &\textbf{} &  \textbf{\& Journalism}   \\ 
+ \hline\hline \rowcolor{Gray} 
+ Agricultural Economics & Commercial Art  & Biochemical & Accounting & Advertising \& \\ 
+ \rowcolor {Gray} 
+  & \& Graphic Design & Sciences &  &  Public Relations \\
+ \hline
+ Agricultural Production & Drama & Biology & Actuarial & Communications \\
+ \& Management &  \& Theater Arts & & Science & \\
+ \hline \rowcolor{Gray}
+ Animal Sciences &  Film Video \& & Botany & Business & Journalism \\
+ \rowcolor{Gray}
+  &  Photographic Arts & & Economics & \\
+ \hline 
+ Food Science & Fine Arts & Cognitive Science & Business Management & Mass Media \\
+  &  & \& Biopsychology & \& Administration & \\
+  \hline \rowcolor{Gray}
+ Forestry & Miscellaneous & Ecology & Finance & \\
+ \rowcolor{Gray}
+  &  Fine Arts & & & \\
+  \hline
+ General Agriculture &  Music & Environmental & General & \\
+  &  & Science & Business & \\
+  \hline \rowcolor{Gray}
+ Natural Resources & Studio Arts & Genetics & Hospitality & \\
+ \rowcolor{Gray}
+  & & & Management & \\
+  \hline 
+ Management & Visual \& & Microbiology & Human Resources \& & \\
+  & Performing Arts &  & Personnel Management & \\
+  \hline \rowcolor{Gray}
+ Plant Science & & Miscellaneous & International & \\
+ \rowcolor{Gray}
+ \& Agronomy &  & Biology & Business & \\
+ \hline
+ Soil Science &  & Molecular & Management Information & \\
+  &  & Biology & Systems \& Statistics & \\
+  \hline \rowcolor{Gray}
+  &  & Neuroscience & Marketing \& & \\
+  \rowcolor{Gray}
+  &  & & Marketing Research & \\
+  \hline  &  & Pharmacology & Miscellaneous Business \& & \\
+  &  & & Medical Administration & \\
+\hline \rowcolor{Gray}
+ &  & Physiology & Operations Logistics & \\
+ \rowcolor{Gray}
+ &  & & \& E-Commerce & \\
+ \hline 
+ &  & Zoology & & \\
+ &  & & & \\
+ \hline\hline
+\end{tabular} 
+\endgroup
+\end{center}
+
+\newpage
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begingroup \scriptsize
+\begin{tabular}{|l| l| l| l |l|}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 10: Aggregation of Major Fields (continued)}} \\
+\hline\hline 
+\textbf{Computers \&} & \textbf{Education} & \textbf{Engineering} & \textbf{Health} & \textbf{Humanities}  \\
+ \textbf{Mathematics} &\textbf{} & \textbf{} &\textbf{} &  \textbf{\& Liberal Arts}   \\ 
+ \hline\hline \rowcolor{Gray} 
+ Applied & Art \&  & Aerospace &  Community \& & Anthropology \&\\ 
+ \rowcolor{Gray}
+Mathematics  & Music Education & Engineering &  Public Health & Archaeology \\
+ \hline
+ Communication & Early Childhood & Architectural & General Medicine & Area, Ethnic \& \\
+ Technologies &  Education & Engineering & \& Health Services & Civilization \\
+  & & & & Studies \\
+ \hline \rowcolor{Gray}
+ Computer &  Educational & Architecture & Health \& Medical & Art History \\
+ \rowcolor{Gray}
+ Administration & Administration & & Administrative & \& Criticism \\
+ \rowcolor{Gray}
+Management  & \& Supervision & Health \& Medical & Services & \\ 
+\rowcolor{Gray}
+ \& Security& & & & \\
+ \hline
+ Computer \& & Elementary & Biological & Health \& Medical & Composition \\
+ Information &  Education & Engineering & Preparatory Programs & \& Speech \\
+ Systems & & & & \\
+  \hline \rowcolor{Gray}
+Computer & General & Biomedical & Medical Assisting & English Language\\
+\rowcolor{Gray}
+ Engineering & Education & Engineering & Services & \& Literature \\
+  \hline
+Computer  & Language \& & Chemical & Medical Technologies & French, German \\
+Networking \&  & Drama Education & Engineering & Technicians & Latin \& Other\\
+Telecommunications & & & & Common Foreign\\
+  & & & & Languages Studies \\
+  \hline \rowcolor{Gray}
+Computer  & Library & Civil & Miscellaneous Health & History \\
+\rowcolor{Gray}
+ Programming \& & Science & Engineering & Medical Professions & \\
+ \rowcolor{Gray}
+Data Processing  & & & & \\
+  \hline
+Computer & Mathematics & Electrical & Nurses & Humanities \\
+Science  & Teacher Education & Engineering & &  \\
+  \hline \rowcolor{Gray}
+ Information & Miscellaneous & Electrical Engineering & Nutritional & Intercultural \& \\
+ \rowcolor{Gray}
+ Sciences & Education & Technology & Sciences & International \\
+  \rowcolor{Gray}
+   & & & & Studies \\
+ \hline 
+ Mathematics &  Physical \& Health & Engineering \& & Pharmacy  &  Liberal Arts \\
+ & Education Teaching & Industrial  & Pharmaceutical & \\
+ &  & Management & Sciences \&  & \\
+ &  &  & Administration & \\
+  \hline \rowcolor{Gray}
+ Mathematics \& & School Student & Engineering Mechanics & Treatment Therapy & Linguisitics\\
+ \rowcolor{Gray}
+ Computer Science & Counseling & Physics \& Science & Professions & \& Comparative\\
+ \rowcolor{Gray}
+  & & & & Language \&\\
+  \rowcolor{Gray}
+  & & & & Literature \\
+  \hline
+  &  Science \& Computer & Engineering &  Communication & Other Foreign  \\
+  & Teacher Education & Technologies &  Disorders & Languages \\
+   & & & Sciences \& Services*  & \\
+\hline \rowcolor{Gray}
+ & Secondary Teacher & Environmental &  & Philosophy \&\\
+ \rowcolor{Gray}
+ & Education & Engineering & & \& Religious \\
+ \rowcolor{Gray}
+  & & & & Studies \\
+ \hline 
+ & Social Science or History & General & & Theology\\
+ & Teacher Education & Engineering & & \& Religious \\
+  & & & & Vocations \\
+ \hline\hline
+\end{tabular} 
+\endgroup
+\end{center}
+
+*In the description of their aggregation, Carnevale et al. failed to include "6102 Communication Disorders Sciences \& Services" in any category.  It is unclear to me if this is simply a typo, or if they omitted it from their analysis entirely.  I include it in the Health category.  
+
+
+\newpage
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begingroup \scriptsize
+\begin{tabular}{|l| l| l| l |l|}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 10: Aggregation of Major Fields (continued)}} \\
+\hline\hline 
+\textbf{Computers \&} & \textbf{Education} & \textbf{Engineering} & \textbf{Health} & \textbf{Humanities}  \\
+ \textbf{Mathematics} &\textbf{} & \textbf{} &\textbf{} &  \textbf{\& Liberal Arts}   \\ 
+ \hline\hline \rowcolor{Gray} 
+  & Special Needs \&  & Geological \& & & United States \\ 
+ \rowcolor{Gray}
+  & Education & Geophysical Engineering &  & History \\
+ \hline
+  & Teacher Education: & Industrial \& & &  \\
+  &  Multiple Levels & Manufacturing Engineering & & \\
+ \hline \rowcolor{Gray}
+  &  & Industrial Production & & \\
+ \rowcolor{Gray}
+ &  & Technologies &  & \\
+ \hline
+  &  & Materials Engineering & &  \\
+ &  & \& Materials Science &  & \\
+  \hline \rowcolor{Gray}
+ &  & Mechanical & & \\
+\rowcolor{Gray}
+ &  & Engineering & & \\
+  \hline
+ &   & Mechanical Engineering & & \\
+ &  & Related Technologies & & \\
+  \hline \rowcolor{Gray}
+&  & Metallurgical & & \\
+\rowcolor{Gray}
+  & & Engineering & & \\
+  \hline
+ &  & Mining \& Mineral & & \\
+  & & Engineering &  & \\
+  \hline \rowcolor{Gray}
+  & & Miscellaneous & & \\
+ \rowcolor{Gray}
+  &  & Engineering & & \\
+ \hline 
+ &  & Miscellaneous &  & \\
+  &  & Engineering Technologies & & \\
+  \hline \rowcolor{Gray}
+   &  & Naval Architecture & & \\
+ \rowcolor{Gray}
+  &  & Marine Engineering& & \\
+  \hline
+  &  & Nuclear &  & \\
+  &  & Engineering & & \\
+\hline \rowcolor{Gray}
+ &  & Petroleum & & \\
+ \rowcolor{Gray}
+ &  & Engineering & & \\
+ \hline\hline
+\end{tabular} 
+\endgroup
+\end{center}
+
+
+\newpage
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begingroup \scriptsize
+\begin{tabular}{|l| l| l| l |l|}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 10: Aggregation of Major Fields (continued)}} \\
+\hline\hline 
+\textbf{Industrial Arts \&} & \textbf{Law \&} & \textbf{Physical} & \textbf{Psychology} & \textbf{Social}  \\
+ \textbf{Consumer Services} &\textbf{Public Policy} & \textbf{Sciences} &\textbf{\& Social Work} &  \textbf{Science}   \\ 
+ \hline\hline \rowcolor{Gray} 
+ Construction & Court & Astronomy \& & Clinical &Criminology \\ 
+ \rowcolor{Gray}
+Services & Reporting & Astrophysics & Psychology &  \\
+ \hline
+ Cosmetology & Criminal Justice & Atmospheric & Counseling & Economics \\
+Services \& &  \& Fire & Sciences \& & Psychology & \\
+ Culinary Arts & Protection & Meteorology & & \\
+ \hline \rowcolor{Gray}
+ Electrical \& &  Pre-Law \& & Chemistry & Educational & General \\
+ \rowcolor{Gray}
+ Mechanic Repairs & Legal Studies & & Psychology & Social Sciences\\
+ \rowcolor{Gray}
+ \& Technologies & & & & \\
+ \hline
+Family  \& & Public & Geology \& & Human Services & Geography \\
+Consumer Sciences & Administration & Earth Science & Community &  \\
+ & & & Organizaton & \\
+  \hline \rowcolor{Gray}
+Military & Public & Multi-disciplinary & Industrial \& & Interdisciplinary \\
+\rowcolor{Gray}
+Technologies & Policy & or General Science & Organizational & Social Sciences\\
+\rowcolor{Gray}
+ & & & Psychology & \\
+  \hline
+Physical Fitness &   & Nuclear, Industrial & Miscellaneous & International \\
+Parks, Recreation &  & Radiology \& & Psychology & Relations \\
+\& Leisure & & Biological & & \\
+ & & Technologies & & \\
+  \hline \rowcolor{Gray}
+Precision Production &  & Oceanography & Psychology & Miscellaneous \\
+\rowcolor{Gray}
+ \& Industrial Arts & & & & Social Sciences\\
+  \hline
+Transportation & & Physical & Social & Political Science\\
+Sciences \& &  & Science & Psychology & \& Government \\
+Technologies & & & & \\ 
+  \hline \rowcolor{Gray}
+& & Physics & Social Work & Sociology\\
+ \rowcolor{Gray}
+  &  &  &  & \\
+ \hline 
+ &  & &  & Statistics \&\\
+  &  &  &  & Decision Science \\
+ \hline\hline
+\end{tabular} 
+\endgroup
+\end{center}
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 11: OLS Results for Annual Wage Income in Levels}} \\
+\hline
+ & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}    \\
+\hline
+Age & 3019.62 & (24.05) & 125.54 & 0.000 \\
+Age Squared & -29.51 & (0.29) & -102.60 & 0.000 \\
+Female & -15216.80 & (108.65) & -140.06 & 0.000 \\
+Black & -7249.79 & (152.72) & -47.47 & 0.000 \\
+Hispanic or Latino & -8966.95 & (130.03) & -68.96 & 0.000 \\
+Asian or Pacific Islander & -7426.20 & (277.63) & -26.75 & 0.000 \\
+Other Race & -4397.66 & (336.82) & -13.06 & 0.000 \\
+Married  & 4718.89 & (118.47) & 39.83 & 0.000 \\
+Urban  & 9287.39 & (116.66) & 79.61 & 0.000 \\
+Number of Children  & 1477.80 & (58.87) & 25.10 & 0.000 \\
+Some College & 9305.84 & (93.24) & 99.80 & 0.000 \\
+Bachelor's Only & 21887.47 & (674.91) & 32.43 & 0.000 \\
+More Than Bachelor's & 42812.12 & (706.01) & 60.64 & 0.000 \\
+Mismatch 1 & -23626.62 & (403.39) & -58.57 & 0.000 \\
+Mismatch 2 & -18280.95 & (342.02) & -53.45 & 0.000 \\
+Mismatch 3 & -32242.16 & (933.93) & -34.52 & 0.000 \\
+Mismatch 4 & -26563.48 & (764.76) & -34.73 & 0.000 \\
+Agriculture \& Natural Resources & 10194.59 & (1109.55) & 9.19 & 0.000 \\
+Biology \& Life Science & 29923.30 & (1010.85) & 29.60 & 0.000 \\
+Business & 23641.49 & (719.83) & 32.84 & 0.000 \\
+Communications \& Journalism & 12085.88 & (868.92) & 13.91 & 0.000 \\
+Computers \& Mathematics & 24650.48 & (873.34) & 28.23 & 0.000  \\
+Education & -5783.04 & (696.05) & -8.31 & 0.000  \\
+Engineering & 28715.16 & (798.40) & 35.97 & 0.000 \\
+Health & 17561.72 & (774.24) & 22.68 & 0.000 \\
+Humanities \& Liberal Arts & 9089.80 & (786.38) & 11.56 & 0.000 \\
+Industrial Arts \& Consumer Services & 5539.17 & (891.51) & 6.21 & 0.000 \\
+Law \& Public Policy & 15039.85 & (975.74) & 15.41 & 0.000 \\
+Physical Sciences & 26354.33 & (1057.60) & 24.92 & 0.000 \\
+Psychology \& Social Work & 2769.00 & (784.09) & 3.53 & 0.000 \\
+Social Science & 24937.94 & (882.39) & 28.26 & 0.000 \\
+Constant & -40888.65 & (452.77) & -90.31 & 0.000 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\hspace{12mm} \small{The values in parentheses are reported standard errors that employ White's correction for heteroskedasticity.} 
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 12: Tobit Results for Annual Wage Income in Levels}} \\
+\hline
+ & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}    \\
+\hline
+Age & 3046.23 & (25.89) & 117.66 & 0.000 \\
+Age Squared & -30.28 & (0.31) & -97.61 & 0.000 \\
+Female & -15042.43 & (114.05) & -131.89 & 0.000 \\
+Black & -6798.46 & (160.02) & -42.48 & 0.000 \\
+Hispanic or Latino & -9171.02 & (139.84) & -65.58 & 0.000 \\
+Asian or Pacific Islander & -7652.33 & (289.12) & -26.47 & 0.000 \\
+Other Race & -4418.09 & (355.28) & -12.44 & 0.000 \\
+Married  & 4703.03 & (125.48) & 37.48 & 0.000 \\
+Urban  & 9722.37 & (126.32) & 76.86 & 0.000 \\
+Number of Children  & 1404.20 & (61.93) & 22.68 & 0.000 \\
+Some College & 9722.37 & (102.15) & 95.18 & 0.000 \\
+Bachelor's Only & 21339.14 & (717.47) & 29.74 & 0.000 \\
+More Than Bachelor's & 42388.58 & (746.48) & 56.78 & 0.000 \\
+Mismatch 1 & -24370.53 & (421.81) & -57.78 & 0.000 \\
+Mismatch 2 & -18255.24 & (352.57) & -51.78 & 0.000 \\
+Mismatch 3 & -33061.96 & (972.97) & -33.98 & 0.000 \\
+Mismatch 4 & -26602.18 & (783.65) & -33.95 & 0.000 \\
+Agriculture \& Natural Resources & 10701.09 & (1179.23) & 9.07 & 0.000 \\
+Biology \& Life Science & 31247.41 & (1049.59) & 29.77 & 0.000 \\
+Business & 25006.52 & (761.08) & 32.86 & 0.000 \\
+Communications \& Journalism & 13072.50 & (914.03) & 14.30 & 0.000 \\
+Computers \& Mathematics & 26352.35 & (910.15) & 28.95 & 0.000  \\
+Education & -4332.17 & (738.63) & -5.87 & 0.000  \\
+Engineering & 30457.35 & (837.79) & 36.35 & 0.000 \\
+Health & 19277.9 & (813.55) & 23.7 & 0.000 \\
+Humanities \& Liberal Arts & 10196.40 & (828.22) & 12.31 & 0.000 \\
+Industrial Arts \& Consumer Services & 6737.35 & (938.77) & 7.18 & 0.000 \\
+Law \& Public Policy & 16614.95 & (1015.20) & 16.37 & 0.000 \\
+Physical Sciences & 27895.23 & (1096.64) & 25.44 & 0.000 \\
+Psychology \& Social Work & 3784.98 & (827.33) & 4.57 & 0.000 \\
+Social Science & 26216.67 & (921.76) & 28.44 & 0.000 \\
+Constant & -42551.78 & (487.35) & -87.31 & 0.000 \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\hspace{12mm} \small{The values in parentheses are reported standard errors employ White's correction for heteroskedasticity.} 
+
+\scriptsize{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c c c}
+\hline\hline
+\multicolumn{9}{c}{\textbf{Table 13: OLS Results Under Alternative Major Group Specifcation}} \\
+\hline
+ & \multicolumn{4}{c}{\underline{Original Specification}} & \multicolumn{4}{c}{\underline{Alternative Specification}} \\
+ & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}  & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}  \\
+\hline
+Age & 0.109 & (0.0005) & 210.84 & 0.000 & 0.109 & (0.0005) & 211.00 & 0.000 \\
+Age Squared & -0.001 & (0.0000) & -187.33 & 0.000 & -0.001 & (0.0000) & -187.49 & 0.000 \\
+Female & -0.327 & (0.0019) & -173.59 & 0.000 & -0.327 & (0.0019) & -173.90 & 0.000 \\
+Black & -0.138 & (0.0031) & -45.11 & 0.000 & -0.138 & (0.0031) & -45.12 & 0.000 \\
+Hispanic or Latino & -0.175 & (0.0027) & -64.58 & 0.000 & -0.175 & (0.0027) & -64.56 & 0.000 \\
+Asian or Pacific Islander & -0.137 & (0.0042) & -32.65 & 0.000 & -0.136 & (0.0042) & -32.57 & 0.000 \\
+Other Race & -0.083 & (0.0065) & -12.79 & 0.000 & -0.084 & (0.0065) & -12.81 & 0.000 \\
+Married  & 0.121 & (0.0021) & 58.84 & 0.000 & 0.121 & (0.0021) & 58.85 & 0.000 \\
+Urban  & 0.167 & (0.0024) & 69.04 & 0.000 & 0.167 & (0.0024) & 68.93 & 0.000 \\
+Number of Children  & 0.006 & (0.0009) & 6.96 & 0.000 & 0.006 & (0.0009) & 7.00 & 0.000 \\
+Some College & 0.232 & (0.0023) & 103.13 & 0.000 & 0.232 & (0.0023) & 103.15 & 0.000 \\
+Bachelor's Only & 0.539 & (0.0098) & 54.82 & 0.000 & 0.542 & (0.0098) & 55.40 & 0.000 \\
+More Than Bachelor's & 0.752 & (0.0100) & 75.11 & 0.000 & 0.754 & (0.0099) & 75.87 & 0.000 \\
+Mismatch 1 & -0.454 & (0.0060) & -75.22 & 0.000 & -0.454 & (0.0060) & -75.27 & 0.000 \\
+Mismatch 2 & -0.290 & (0.0047) & -60.61 & 0.000 & -0.290 & (0.0048 & -60.69 & 0.000 \\
+Mismatch 3 & -0.521 & (0.0136) & -38.37 & 0.000 & -0.523 & (0.0136) & -38.46 & 0.000 \\
+Mismatch 4 & -0.364 & (0.0098) & -37.16 & 0.000 & -0.363 & (0.0098) & -37.09 & 0.000 \\
+Agriculture \& Natural Resources & 0.186 & (0.0151) & 12.34 & 0.000 & 0.174 & (0.0153) & 11.40 & 0.000 \\
+Biology \& Life Science & 0.319 & (0.0120) & 26.53 & 0.000 & 0.316 & (0.0121) & 26.16 & 0.000 \\
+Business & 0.301 & (0.0101) & 29.98 & 0.000 & 0.298 & (0.0100) & 29.83 & 0.000 \\
+Communications \& Journalism & 0.191 & (0.0122) & 15.64 & 0.000 & 0.193 & (0.0121) & 15.89 & 0.000 \\
+Computers \& Mathematics & 0.325 & (0.0114) & 28.55 & 0.000  & 0.324 & (0.0113) & 28.67 & 0.000 \\
+Education & -0.034 & (0.0104) & -3.39 & 0.001  & -0.037 & (0.0104) & -3.61 & 0.000 \\
+Engineering & 0.351 & (0.0106) & 33.03 & 0.000 & 0.346 & (0.0107) & 32.46 & 0.000 \\
+Health & 0.312 & (0.0111) & 28.16 & 0.000 & 0.311 & (0.0110) & 28.27 & 0.000 \\
+Humanities \& Liberal Arts & 0.097 & (0.0109) & 8.89 & 0.000 & 0.101 & (0.0108) & 9.36 & 0.000 \\
+Industrial Arts \& Consumer Services & 0.103 & (0.0136) & 7.59 & 0.000 & 0.109 & (0.0137) & 7.97 & 0.000 \\
+Law \& Public Policy & 0.240 & (0.0136) & 17.58 & 0.000 & 0.236 & (0.0134) & 17.56 & 0.000 \\
+Physical Sciences & 0.289 & (0.0130) & 22.05 & 0.000 & 0.285 & (0.0125) & 22.87 & 0.000 \\
+Psychology \& Social Work & 0.087 & (0.0113) & 7.73 & 0.000 & 0.090 & (0.0113) & 7.97 & 0.000 \\
+Social Science & 0.289 & (0.0112) & 25.89 & 0.000 & 0.287 & (0.0111) & 25.69 & 0.000 \\
+Constant & 7.71 & (0.0106) & 730.27 & 0.000 & 7.71 & (0.0106) & 730.68 & 0.000 \\
+\hline
+$R^2$ & 0.3754 & & & & 0.3739 & & \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+
+\hspace{12mm} \small{The values in parentheses are reported standard errors that employ White's correction for heteroskedasticity.} 
+
+\small{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Table 14: Percent Mismatch Across Specifications by Major Group}} \\
+\hline
+ & Mode Specification & 50\% EdScore & 66\% EdScore & 75\% Edscore    \\
+\hline
+All & 28.51 & 8.64 & 22.24 & 29.20 \\
+Agriculture \& Natural Resources & 48.95 (2) &  26.94 (1) & 41.78 (1) & 50.26 (1) \\
+Arts & 33.36 (6) & 12.30 (3) & 29.47 (4) & 38.54 (3) \\
+Biology \& Life Science & 23.83 (11) & 6.98 (13) & 15.68 (13) & 22.11 (13) \\
+Business & 35.43 (4) & 9.15 (6) & 28.93 (5) & 36.97 (5) \\
+Communications \& Journalism & 33.85 (5) & 7.91 (10) & 26.68 (6) & 36.63 (6) \\
+Computers \& Mathematics & 19.40 (14) & 5.89 (14) & 15.16 (14) & 20.14 (14) \\
+Education & 19.94 (13) & 7.79 (11) & 17.41 (11) & 24.11 (10) \\
+Engineering & 22.23 (12) & 9.87 (4) & 17.44 (10) & 22.39 (12) \\
+Health & 17.81 (15) & 4.34 (15) & 10.99 (15) & 14.86 (15) \\
+Humanities \& Liberal Arts & 29.99 (8) & 9.02 (7) & 24.48 (7) & 31.60 (7) \\
+Industrial Arts \& Consumer Services & 38.58 (3) & 14.94 (2) & 32.34 (2) & 43.31 (2) \\
+Law \& Public Policy & 58.82 (1) & 9.16 (5) & 29.66 (3) & 38.51 (4) \\
+Physical Sciences & 23.98 (10) & 8.18 (8) & 17.35 (12) & 23.95 (11) \\
+Psychology \& Social Work & 26.59 (9) & 7.37 (12) & 20.73 (9) & 27.17 (9) \\
+Social Science & 31.21 (7) & 7.94 (9) & 22.97 (8) & 20.34 (8) \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+Values in parenthesis are rankings within a specification, with 1 representing the highest share of mismatch and 15 the lowest.  All values are reported for employed individuals over 25 years old.
+
+\scriptsize{
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{l c c c c c c c c}
+\hline\hline
+\multicolumn{9}{c}{\textbf{Table 15: OLS Results Under Alternative Mismatch Specifcation}} \\
+\hline
+ & \multicolumn{4}{c}{\underline{Original Specification}} & \multicolumn{4}{c}{\underline{Alternative Specification}} \\
+ & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}  & \rotatebox{80}{Coefficient} & \rotatebox{80}{Std Err.} &  \rotatebox{80}{t-statistic} & \rotatebox{80}{p-value}  \\
+\hline
+Age & 0.109 & (0.0005) & 210.85 & 0.000 & 0.109 & (0.0005) & 210.93 & 0.000 \\
+Age Squared & -0.001 & (0.0000) & -187.38 & 0.000 & -0.001 & (0.0000) & -187.30 & 0.000 \\
+Female & -0.324 & (0.0019) & -172.21 & 0.000 & -0.329 & (0.0019) & -174.97 & 0.000 \\
+Black & -0.138 & (0.0031) & -44.85 & 0.000 & -0.138 & (0.0031) & -44.91 & 0.000 \\
+Hispanic or Latino & -0.175 & (0.0027) & -64.64 & 0.000 & -0.173 & (0.0027) & -63.93 & 0.000 \\
+Asian or Pacific Islander & -0.137 & (0.0042) & -32.48 & 0.000 & -0.131 & (0.0042) & -31.21 & 0.000 \\
+Other Race & -0.083 & (0.0065) & -12.80 & 0.000 & -0.082 & (0.0065) & -12.55 & 0.000 \\
+Married  & 0.122 & (0.0021) & 59.14 & 0.000 & 0.122 & (0.0021) & 58.89 & 0.000 \\
+Urban  & 0.168 & (0.0024) & 69.12 & 0.000 & 0.165 & (0.0024) & 67.95 & 0.000 \\
+Number of Children  & 0.006 & (0.0009) & 6.71 & 0.000 & 0.007 & (0.0009) & 7.39 & 0.000 \\
+Some College & 0.232 & (0.0023) & 102.96 & 0.000 & 0.233 & (0.0023) & 103.42 & 0.000 \\
+Bachelor's Only & 0.541 & (0.0098) & 55.04 & 0.000 & 0.469 & (0.0097) & 48.45 & 0.000 \\
+More Than Bachelor's & 0.740 & (0.0100) & 74.11 & 0.000 & 0.711 & (0.0099) & 71.67 & 0.000 \\
+Mismatch & -0.376 & (0.0037) & -100.51 & 0.000 & -0.602 & (0.0064) & -93.75 & 0.000 \\
+Agriculture \& Natural Resources & 0.178 & (0.0151) & 11.80 & 0.000 & 0.196 & (0.0150) & 13.03 & 0.000 \\
+Biology \& Life Science & 0.325 & (0.0120) & 26.99 & 0.000 & 0.316 & (0.0120) & 26.41 & 0.000 \\
+Business & 0.305 & (0.0101) & 30.36 & 0.000 & 0.284 & (0.0100) & 28.29 & 0.000 \\
+Communications \& Journalism & 0.195 & (0.0122) & 15.96 & 0.000 & 0.171 & (0.0122) & 14.03 & 0.000 \\
+Computers \& Mathematics & 0.329 & (0.0114) & 28.87 & 0.000  & 0.346 & (0.0114) & 30.38 & 0.000 \\
+Education & -0.031 & (0.0104) & -2.94 & 0.003  & -0.012 & (0.0104) & -1.17 & 0.243 \\
+Engineering & 0.348 & (0.0106) & 32.79 & 0.000 & 0.75 & (0.0106) & 35.42 & 0.000 \\
+Health & 0.317 & (0.0111) & 28.53 & 0.000 & 0.332 & (0.0111) & 30.08 & 0.000 \\
+Humanities \& Liberal Arts & 0.102 & (0.0109) & 9.34 & 0.000 & 0.089 & (0.0109) & 8.17 & 0.000 \\
+Industrial Arts \& Consumer Services & 0.103 & (0.0136) & 7.57 & 0.000 & 0.104 & (0.0136) & 7.64 & 0.000 \\
+Law \& Public Policy & 0.267 & (0.0136) & 19.41 & 0.000 & 0.151 & (0.0135) & 11.25 & 0.000 \\
+Physical Sciences & 0.293 & (0.0130) & 22.34 & 0.000 & 0.295 & (0.0130) & 22.61 & 0.000 \\
+Psychology \& Social Work & 0.094 & (0.0113) & 8.34 & 0.000 & 0.085 & (0.0112) & 7.56 & 0.000 \\
+Social Science & 0.296 & (0.0112) & 26.41 & 0.000 & 0.272 & (0.0112) & 24.39 & 0.000 \\
+Constant & 7.71 & (0.0106) & 729.82 & 0.000 & 7.71 & (0.0106) & 729.11 & 0.000 \\
+\hline
+$R^2$ & 0.3745 & & & & 0.3739 & & \\
+\hline\hline
+\end{tabular} 
+\end{center}} 
+\hspace{12mm} \small{The values in parentheses are reported standard errors that employ White's correction for heteroskedasticity.} 
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
